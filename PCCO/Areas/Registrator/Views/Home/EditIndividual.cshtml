@@ -1,0 +1,207 @@
+﻿@model PCCO.Models.ViewModels.EditorIndividualViewModel
+@{
+    ViewBag.Title = "Edit Individual";
+}
+
+<form asp-action="EditIndividual" asp-controller="Home" asp-area="Registrator" method="post">
+    <div class="raw">
+        <div class="column">
+            @Html.LabelFor(m => m.FirstName)
+            <br />
+            @Html.TextBoxFor(m => m.FirstName)
+            @Html.ValidationMessageFor(m => m.FirstName)
+            <br /><br />
+            @Html.LabelFor(m => m.LastName)
+            <br />
+            @Html.TextBoxFor(m => m.LastName)
+            @Html.ValidationMessageFor(m => m.LastName)
+            <br /><br />
+            @Html.LabelFor(m => m.MiddleName)
+            <br />
+            @Html.TextBoxFor(m => m.MiddleName)
+            @Html.ValidationMessageFor(m => m.MiddleName)
+            <br /><br />
+            @Html.LabelFor(m => m.IdentificationCode)
+            <br />
+            @Html.TextBoxFor(m => m.IdentificationCode)
+            @Html.ValidationMessageFor(m => m.IdentificationCode)
+            <br /><br />
+            @Html.LabelFor(m => m.WorkPosition)
+            <br />
+            @Html.TextBoxFor(m => m.WorkPosition)
+            @Html.ValidationMessageFor(m => m.WorkPosition)
+            <br /><br />
+            @Html.LabelFor(m => m.Workplace)
+            <br />
+            @Html.TextBoxFor(m => m.Workplace)
+            @Html.ValidationMessageFor(m => m.Workplace)
+            <br /><br />
+            @Html.LabelFor(m => m.Birthday)
+            <br />
+            @Html.TextBoxFor(m => m.Birthday, new {type="date"})
+            @Html.ValidationMessageFor(m => m.Birthday)
+            <br /><br />
+            @Html.LabelFor(m => m.Birthplace)
+            <br />
+            @Html.TextBoxFor(m => m.Birthplace)
+            @Html.ValidationMessageFor(m => m.Birthplace)
+            <br /><br />
+            @Html.LabelFor(m => m.Residence)
+            <br />
+            @Html.TextBoxFor(m => m.Residence)
+            @Html.ValidationMessageFor(m => m.Residence)
+            <br /><br />
+            @Html.LabelFor(m => m.Series)
+            <br />
+            @Html.TextBoxFor(m => m.Series)
+            @Html.ValidationMessageFor(m => m.Series)
+            <br /><br />
+            @Html.LabelFor(m => m.CourtName)
+            <br />
+            @Html.TextBoxFor(m => m.CourtName)
+            @Html.ValidationMessageFor(m => m.CourtName)
+            <br /><br />
+            @Html.LabelFor(m => m.CourtCaseNumber)
+            <br />
+            @Html.TextBoxFor(m => m.CourtCaseNumber)
+            @Html.ValidationMessageFor(m => m.CourtCaseNumber)
+            <br /><br />
+            @Html.LabelFor(m => m.CourtSentenceDate)
+            <br />
+            @Html.TextBoxFor(m => m.CourtSentenceDate)
+            @Html.ValidationMessageFor(m => m.CourtSentenceDate)
+        </div>
+        <div class="column">
+            @Html.LabelFor(m => m.CourtSentenceNumber)
+            <br />
+            @Html.TextBoxFor(m => m.CourtSentenceNumber)
+            @Html.ValidationMessageFor(m => m.CourtSentenceNumber)
+            <br /><br />
+            @Html.LabelFor(m => m.CourtSentenceApplyingDate)
+            <br />
+            @Html.TextBoxFor(m => m.CourtSentenceApplyingDate, new {type="date"})
+            @Html.ValidationMessageFor(m => m.CourtSentenceApplyingDate)
+            <br /><br />
+            @Html.LabelFor(m => m.CriminalRecordCancellationDate)
+            <br />
+            @Html.TextBoxFor(m => m.CriminalRecordCancellationDate, new {type="date"})
+            @Html.ValidationMessageFor(m => m.CriminalRecordCancellationDate)
+            <br /><br />
+            @Html.LabelFor(m => m.CriminalRecordCancellationReason)
+            <br />
+            @Html.TextBoxFor(m => m.CriminalRecordCancellationReason)
+            @Html.ValidationMessageFor(m => m.CriminalRecordCancellationReason)
+            <br /><br />
+            @Html.LabelFor(m => m.CriminalActionType)
+            <br />
+            @Html.TextBoxFor(m => m.CriminalActionType)
+            @Html.ValidationMessageFor(m => m.CriminalActionType)
+            <br /><br />
+            @Html.LabelFor(m => m.CriminalActionCancellationDate)
+            <br />
+            @Html.TextBoxFor(m => m.CriminalActionCancellationDate, new {type="date"})
+            @Html.ValidationMessageFor(m => m.CriminalActionCancellationDate)
+            <br /><br />
+            @Html.LabelFor(m => m.CriminalActionCancellationReason)
+            <br />
+            @Html.TextBoxFor(m => m.CriminalActionCancellationReason)
+            @Html.ValidationMessageFor(m => m.CriminalActionCancellationReason)
+            <br /><br />
+            @Html.LabelFor(m => m.DisciplinaryActionType)
+            <br />
+            @Html.TextBoxFor(m => m.DisciplinaryActionType)
+            @Html.ValidationMessageFor(m => m.DisciplinaryActionType)
+            <br /><br />
+            @Html.LabelFor(m => m.DisciplinaryActionDetails)
+            <br />
+            @Html.TextBoxFor(m => m.DisciplinaryActionDetails)
+            @Html.ValidationMessageFor(m => m.DisciplinaryActionDetails)
+            <br /><br />
+            @Html.LabelFor(m => m.DisciplinaryActionCancellationDate)
+            <br />
+            @Html.TextBoxFor(m => m.DisciplinaryActionCancellationDate, new {type="date"})
+            @Html.ValidationMessageFor(m => m.DisciplinaryActionCancellationDate)
+            <br /><br />
+            @Html.LabelFor(m => m.DisciplinaryActionCancellationReason)
+            <br />
+            @Html.TextBoxFor(m => m.DisciplinaryActionCancellationReason)
+            @Html.ValidationMessageFor(m => m.DisciplinaryActionCancellationReason)
+            <br /><br />
+            @Html.LabelFor(m => m.ArticleNumber)
+            <br />
+            @Html.TextBoxFor(m => m.ArticleNumber)
+            @Html.ValidationMessageFor(m => m.ArticleNumber)
+            <br /><br />
+            @Html.LabelFor(m => m.ArticleTitle)
+            <br />
+            @Html.TextBoxFor(m => m.ArticleTitle)
+            @Html.ValidationMessageFor(m => m.ArticleTitle)
+        </div>
+        <div class="column">
+            @Html.LabelFor(m => m.ArticleContent)
+            <br />
+            @Html.TextBoxFor(m => m.ArticleContent)
+            @Html.ValidationMessageFor(m => m.ArticleContent)
+            <br /><br />
+            @Html.LabelFor(m => m.OffenceDescription)
+            <br />
+            @Html.TextBoxFor(m => m.OffenceDescription)
+            @Html.ValidationMessageFor(m => m.OffenceDescription)
+            <br /><br />
+            @Html.LabelFor(m => m.OffenceMethod)
+            <br />
+            @Html.TextBoxFor(m => m.OffenceMethod)
+            @Html.ValidationMessageFor(m => m.OffenceMethod)
+            <br /><br />
+            @Html.LabelFor(m => m.OffenceLocation)
+            <br />
+            @Html.TextBoxFor(m => m.OffenceLocation)
+            @Html.ValidationMessageFor(m => m.OffenceLocation)
+            <br /><br />
+            @Html.LabelFor(m => m.Code)
+            <br />
+            @Html.TextBoxFor(m => m.Code)
+            @Html.ValidationMessageFor(m => m.Code)
+            <br /><br />
+            @Html.LabelFor(m => m.UnitName)
+            <br />
+            @Html.TextBoxFor(m => m.UnitName)
+            @Html.ValidationMessageFor(m => m.UnitName)
+            <br /><br />
+            @Html.LabelFor(m => m.DepartmentName)
+            <br />
+            @Html.TextBoxFor(m => m.DepartmentName)
+            @Html.ValidationMessageFor(m => m.DepartmentName)
+            <br /><br />
+            @Html.LabelFor(m => m.PostalCode)
+            <br />
+            @Html.TextBoxFor(m => m.PostalCode)
+            @Html.ValidationMessageFor(m => m.PostalCode)
+            <br /><br />
+            @Html.LabelFor(m => m.City)
+            <br />
+            @Html.TextBoxFor(m => m.City)
+            @Html.ValidationMessageFor(m => m.City)
+            <br /><br />
+            @Html.LabelFor(m => m.Street)
+            <br />
+            @Html.TextBoxFor(m => m.Street)
+            @Html.ValidationMessageFor(m => m.Street)
+            <br /><br />
+            @Html.LabelFor(m => m.BuildingNumber)
+            <br />
+            @Html.TextBoxFor(m => m.BuildingNumber)
+            @Html.ValidationMessageFor(m => m.BuildingNumber)
+            <br /><br />
+            @Html.LabelFor(m => m.IsActive)
+            <br />
+            @Html.TextBoxFor(m => m.IsActive)
+            @Html.ValidationMessageFor(m => m.IsActive)
+            @Html.HiddenFor(m => m.IdPcco)
+            @Html.HiddenFor(m => m.IsActive)
+        </div>
+    </div>
+    <div>
+        <button type="submit" class="search-btn subscribe btn btn-primary btn-block shadow-sm"> Save </button>
+    </div>
+</form>
