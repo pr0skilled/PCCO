@@ -23,8 +23,8 @@
     <div class="row">
         <div class="col-lg-6 mx-auto" style="max-width: 30%">
             <div class="card ">
-                <div class="card-header">
-                    <div class="bg-white shadow-sm pt-4 pl-2 pr-2">
+                <div class="card-header pt-4">
+                    <div class="bg-white shadow-sm pl-2 pr-2">
                         <ul class="nav nav-pills mb-3 rounded nav-fill" id="pills-tab" role="tablist">
                             <li class="nav-item" role="presentation">
                                 <button class="nav-link active" id="pills-individual-tab" data-bs-toggle="pill" data-bs-target="#pills-individual" type="button" role="tab" aria-controls="pills-individual" aria-selected="true"> Individual </button>
@@ -56,33 +56,36 @@
 </div>
 
 <div id="individualItemsList" style="display:@indStyle; text-align: center;">
-    <table id="tblIndData">
-        <thead>
-            <tr>
-                <th>Fullname</th>
-                <th>Work position</th>
-                <th>Workplace</th>
-                <th>Offence description</th>
-                <th>Article number</th>
-                <th>Article title</th>
-                <th>Article content</th>
-                <th>Court name</th>
-                <th>Court case number</th>
-                <th>Court sentence date</th>
-                <th>Court sentence number</th>
-                <th>Court sentence applying date</th>
-                <th>Disciplinary action details</th>
-            </tr>
-        </thead>
+    <table id="tblIndData" class="cell-border hover compact">
         @if (Model.Individual.Count() != 0)
         {
+            <thead>
+                <tr>
+                    <th>Fullname</th>
+                    <th>Work position</th>
+                    <th>Workplace</th>
+                    <th>Offence description</th>
+                    <th>Article number</th>
+                    <th>Article title</th>
+                    <th>Article content</th>
+                    <th>Court name</th>
+                    <th>Court case number</th>
+                    <th>Court sentence date</th>
+                    <th>Court sentence number</th>
+                    <th>Court sentence applying date</th>
+                    <th>Disciplinary action details</th>
+                </tr>
+            </thead>
+
             foreach (var item in Model.Individual)
             {
                 <tbody>
-                    <tr>
-                        <td>@Html.DisplayFor(modelitem => item.LastName)
+                    <tr id="@item.GetHashCode()" onclick="expandRow(this.id)">
+                        <td>
+                            @Html.DisplayFor(modelitem => item.LastName)
                             @Html.DisplayFor(modelitem => item.FirstName)
-                            @Html.DisplayFor(modelitem => item.MiddleName)</td>
+                            @Html.DisplayFor(modelitem => item.MiddleName)
+                        </td>
                         <td>@Html.DisplayFor(modelitem => item.WorkPosition)</td>
                         <td>@Html.DisplayFor(modelitem => item.Workplace)</td>
                         <td>@Html.DisplayFor(modelitem => item.OffenceDescription)</td>
@@ -103,21 +106,21 @@
 </div>
 
 <div id="legalItemsList" style="display: @legStyle;">
-    <table id="tblLegData">
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Identification code</th>
-                <th>Offence description</th>
-                <th>Disciplinary action details</th>
-            </tr>
-        </thead>
+    <table id="tblLegData" class="cell-border hover compact">
         @if (Model.Legal.Count() != 0)
         {
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Identification code</th>
+                    <th>Offence description</th>
+                    <th>Disciplinary action details</th>
+                </tr>
+            </thead>
             foreach (var item in Model.Legal)
             {
                 <tbody>
-                    <tr>
+                    <tr id="@item.GetHashCode()" onclick="expandRow(this.id)">
                         <td>@Html.DisplayFor(modelitem => item.Name)</td>
                         <td>@Html.DisplayFor(modelitem => item.IdentificationCode)</td>
                         <td>@Html.DisplayFor(modelitem => item.OffenceDescription)</td>
@@ -134,14 +137,5 @@
 </div>
 
 @section Scripts{
-    <script>
-        $(document).ready(function() {
-            $('#tblIndData').DataTable();
-        });
-    </script>
-    <script>
-        $(document).ready(function() {
-            $('#tblLegData').DataTable();
-        });
-    </script>
+    <script src="~/js/userTables.js"></script>
 }

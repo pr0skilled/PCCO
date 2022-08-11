@@ -2,7 +2,7 @@
 
 @{
     ViewBag.Title = "Registrator";
-    string[] indFields = new string[] { "Fullname", "Identification code", "Work position", "Workplace", "Birthday", "Birthplace", "Residence", "Series", "Court name", "Court case number", "Court sentence date", "Court sentence number", "Court sentence applying date", "Criminal record cancellation date", "Criminal record cancellation reason", "Is active", "Criminal action type", "Criminal action cancellation date", "Criminal action cancellation reason", "Disciplinary action type", "Disciplinary action details", "Disciplinary action cancellation date", "Disciplinary action cancellation reason", "Article number", "Article title", "Article content", "Offence description", "Offence method", "Offence location", "Passport issuing authority" };
+    string[] indFields = new string[] { "Fullname", "Identification code", "Work position", "Workplace", "Birthday", "Birthplace", "Residence", "Series", "Court name", "Court case number", "Court sentence date", "Court sentence number", "Court sentence applying date", "Criminal record cancellation date", "Criminal record cancellation reason", "Criminal action type", "Criminal action cancellation date", "Criminal action cancellation reason", "Disciplinary action type", "Disciplinary action details", "Disciplinary action cancellation date", "Disciplinary action cancellation reason", "Article number", "Article title", "Article content", "Offence description", "Offence method", "Offence location", "Passport issuing authority" };
     string[] legFields = new string[] { "Name", "Identification code", "Legal form", "Is resident", "Court name", "Court case number", "Court sentence date", "Court sentence number", "Court sentence applying date", "Criminal record cancellation date", "Criminal record cancellation reason", "Criminal action type", "Criminal action cancellation date", "Criminal action cancellation reason", "Disciplinary action type", "Disciplinary action details", "Disciplinary action cancellation date", "Disciplinary action cancellation reason", "Article number", "Article title", "Article content", "Offence description", "Offence method", "Offence location" };
     string indStyle = "none"; string legStyle = "none"; string noDataStyle = "";
 
@@ -22,17 +22,17 @@
 }
 
 <div class="container py-5">
-    <div class="pt-4 pl-2 pr-2 pb-2" style="width: 400px;margin: 0 auto;">
+    <div class="pt-4 pl-2 pr-2 pb-2" style="width: 400px; margin: 0 auto;">
         <ul class="nav rounded nav-fill mb-3">
-            <a asp-action="CreateIndividual" class="nav-item btn btn-primary">Create Individual</a>
-            <a asp-action="CreateLegal" class="nav-item btn btn-primary" style="padding: 6px 27px 6px 27px;">Create Legal</a>
+            <a asp-action="UpsertIndividual" class="nav-item btn btn-primary mx-2">Create Individual</a>
+            <a asp-action="UpsertLegal" class="nav-item btn btn-primary mx-2" style="padding: 6px 27px 6px 27px;">Create Legal</a>
         </ul>
     </div>
     <div class="row">
         <div class="col-lg-6 mx-auto">
-            <div class="card ">
-                <div class="card-header">
-                    <div class="bg-white shadow-sm pt-4 pl-2 pr-2">
+            <div class="card">
+                <div class="card-header pt-4">
+                    <div class="bg-white shadow-sm pl-2 pr-2">
                         <ul class="nav nav-pills mb-3 rounded nav-fill" id="pills-tab" role="tablist">
                             <li class="nav-item" role="presentation">
                                 <button class="nav-link active" id="pills-individual-tab" data-bs-toggle="pill" data-bs-target="#pills-individual" type="button" role="tab" aria-controls="pills-individual" aria-selected="true"> Individual </button>
@@ -64,23 +64,23 @@
 </div>
 
 <div id="individualItemsList" style="display:@indStyle; text-align: center;">
-    <table id="tableIndData">
-        <thead>
-            <tr>
-                @for (int i = 0; i < indFields.Length; ++i)
-                {
-                    <th>@indFields[i]</th>
-                }
-                <th>Edit</th>
-                <th>Delete</th>
-            </tr>
-        </thead>
+    <table id="tableIndData" class="cell-border hover">
         @if (Model.Individual.Count() != 0)
         {
+            <thead>
+                <tr>
+                    @for (int i = 0; i < indFields.Length; ++i)
+                    {
+                        <th>@indFields[i]</th>
+                    }
+                    <th>Actions</th>
+                </tr>
+            </thead>
+
             foreach (var item in Model.Individual)
             {
                 <tbody>
-                    <tr>
+                    <tr id="@item.GetHashCode()" onclick="expandRow(this.id)">
                         <td>
                             @Html.DisplayFor(modelitem => item.FirstName)
                             @Html.DisplayFor(modelitem => item.LastName)
@@ -100,7 +100,6 @@
                         <td>@Html.DisplayFor(modelitem => item.CourtSentenceApplyingDate)</td>
                         <td>@Html.DisplayFor(modelitem => item.CriminalRecordCancellationDate)</td>
                         <td>@Html.DisplayFor(modelitem => item.CriminalRecordCancellationReason)</td>
-                        <td>@Html.DisplayTextFor(modelitem => item.IsActive)</td>
                         <td>@Html.DisplayFor(modelitem => item.CriminalActionType)</td>
                         <td>@Html.DisplayFor(modelitem => item.CriminalActionCancellationDate)</td>
                         <td>@Html.DisplayFor(modelitem => item.CriminalActionCancellationReason)</td>
@@ -115,19 +114,17 @@
                         <td>@Html.DisplayFor(modelitem => item.OffenceMethod)</td>
                         <td>@Html.DisplayFor(modelitem => item.OffenceLocation)</td>
                         <td>
-                            @Html.DisplayFor(modelitem => item.UnitName), code:
-                            @Html.DisplayFor(modelitem => item.Code), department name:
-                            @Html.DisplayFor(modelitem => item.DepartmentName), address:
-                            @Html.DisplayFor(modelitem => item.PostalCode),
+                            @Html.DisplayFor(modelitem => item.UnitName),
+                            code: @Html.DisplayFor(modelitem => item.Code),
+                            department name: @Html.DisplayFor(modelitem => item.DepartmentName),
+                            address: @Html.DisplayFor(modelitem => item.PostalCode),
                             @Html.DisplayFor(modelitem => item.City),
                             @Html.DisplayFor(modelitem => item.Street),
                             @Html.DisplayFor(modelitem => item.BuildingNumber)
                         </td>
-                        <td class="text-center">
-                            <a asp-action="EditIndividual" class="btn btn-primary" asp-route-individualId="@item.IdIndividual">Edit</a>
-                        </td>
-                        <td class="text-center">
-                            <a class="btn btn-danger" onclick="DeleteAlert('/Registrator/Home/Delete/{@item.IdPcco}')">Delete</a>
+                        <td>
+                            <a asp-action="UpsertIndividual" class="btn btn-primary mb-1" asp-route-individualId="@item.IdIndividual"><i class="bi bi-pencil-square"></i> Edit</a>
+                            <a class="btn btn-danger" onclick="deleteAlert('/Registrator/Home/Delete?pccoId={@item.IdPcco}')"><i class="bi bi-trash-fill"></i> Delete</a>
                         </td>
                     </tr>
                 </tbody>
@@ -137,72 +134,65 @@
 </div>
 
 <div id="legalItemsList" style="display: @legStyle; text-align: center;">
-    <table id="tableLegData">
-        <thead>
-            <tr>
-                @for (int i = 0; i < legFields.Length; ++i)
-                {
-                    <th>@legFields[i]</th>
-                }
-                <th>Edit</th>
-                <th>Delete</th>
-            </tr>
-        </thead>
+    <table id="tableLegData" class="cell-border hover compact">
         @if (Model.Legal.Count() != 0)
         {
+            <thead>
+                <tr>
+                    @for (int i = 0; i < legFields.Length; ++i)
+                    {
+                        <th>@legFields[i]</th>
+                    }
+                    <th>Edit</th>
+                    <th>Delete</th>
+                </tr>
+            </thead>
             foreach (var item in Model.Legal)
             {
-                <tr>
-                    <td>@Html.DisplayFor(modelitem => item.Name)</td>
-                    <td>@Html.DisplayFor(modelitem => item.IdentificationCode)</td>
-                    <td>@Html.DisplayFor(modelitem => item.LegalForm)</td>
-                    <td>@Html.DisplayTextFor(modelitem => item.IsResident)</td>
-                    <td>@Html.DisplayFor(modelitem => item.CourtName)</td>
-                    <td>@Html.DisplayFor(modelitem => item.CourtCaseNumber)</td>
-                    <td>@Html.DisplayFor(modelitem => item.CourtSentenceDate)</td>
-                    <td>@Html.DisplayFor(modelitem => item.CourtSentenceNumber)</td>
-                    <td>@Html.DisplayFor(modelitem => item.CourtSentenceApplyingDate)</td>
-                    <td>@Html.DisplayFor(modelitem => item.CriminalRecordCancellationDate)</td>
-                    <td>@Html.DisplayFor(modelitem => item.CriminalRecordCancellationReason)</td>
-                    <td>@Html.DisplayFor(modelitem => item.CriminalActionType)</td>
-                    <td>@Html.DisplayFor(modelitem => item.CriminalActionCancellationDate)</td>
-                    <td>@Html.DisplayFor(modelitem => item.CriminalActionCancellationReason)</td>
-                    <td>@Html.DisplayFor(modelitem => item.DisciplinaryActionType)</td>
-                    <td>@Html.DisplayFor(modelitem => item.DisciplinaryActionDetails)</td>
-                    <td>@Html.DisplayFor(modelitem => item.DisciplinaryActionCancellationDate)</td>
-                    <td>@Html.DisplayFor(modelitem => item.DisciplinaryActionCancellationReason)</td>
-                    <td>@Html.DisplayFor(modelitem => item.ArticleNumber)</td>
-                    <td>@Html.DisplayFor(modelitem => item.ArticleTitle)</td>
-                    <td>@Html.DisplayFor(modelitem => item.ArticleContent)</td>
-                    <td>@Html.DisplayFor(modelitem => item.OffenceDescription)</td>
-                    <td>@Html.DisplayFor(modelitem => item.OffenceMethod)</td>
-                    <td>@Html.DisplayFor(modelitem => item.OffenceLocation)</td>
-                    <td class="text-center">
-                        <a asp-action="EditLegal" class="btn btn-primary" asp-route-legalId="@item.IdLegal">Edit</a>
-                    </td>
-                    <td class="text-center">
-                        <a class="btn btn-danger" onclick="DeleteAlert('/Registrator/Home/Delete/@item.IdPcco')">Delete</a>
-                    </td>
-                </tr>
+                <tbody>
+                    <tr id="@item.GetHashCode()" onclick="expandRow(this.id)">
+                        <td>@Html.DisplayFor(modelitem => item.Name)</td>
+                        <td>@Html.DisplayFor(modelitem => item.IdentificationCode)</td>
+                        <td>@Html.DisplayFor(modelitem => item.LegalForm)</td>
+                        <td>@Html.DisplayTextFor(modelitem => item.IsResident)</td>
+                        <td>@Html.DisplayFor(modelitem => item.CourtName)</td>
+                        <td>@Html.DisplayFor(modelitem => item.CourtCaseNumber)</td>
+                        <td>@Html.DisplayFor(modelitem => item.CourtSentenceDate)</td>
+                        <td>@Html.DisplayFor(modelitem => item.CourtSentenceNumber)</td>
+                        <td>@Html.DisplayFor(modelitem => item.CourtSentenceApplyingDate)</td>
+                        <td>@Html.DisplayFor(modelitem => item.CriminalRecordCancellationDate)</td>
+                        <td>@Html.DisplayFor(modelitem => item.CriminalRecordCancellationReason)</td>
+                        <td>@Html.DisplayFor(modelitem => item.CriminalActionType)</td>
+                        <td>@Html.DisplayFor(modelitem => item.CriminalActionCancellationDate)</td>
+                        <td>@Html.DisplayFor(modelitem => item.CriminalActionCancellationReason)</td>
+                        <td>@Html.DisplayFor(modelitem => item.DisciplinaryActionType)</td>
+                        <td>@Html.DisplayFor(modelitem => item.DisciplinaryActionDetails)</td>
+                        <td>@Html.DisplayFor(modelitem => item.DisciplinaryActionCancellationDate)</td>
+                        <td>@Html.DisplayFor(modelitem => item.DisciplinaryActionCancellationReason)</td>
+                        <td>@Html.DisplayFor(modelitem => item.ArticleNumber)</td>
+                        <td>@Html.DisplayFor(modelitem => item.ArticleTitle)</td>
+                        <td>@Html.DisplayFor(modelitem => item.ArticleContent)</td>
+                        <td>@Html.DisplayFor(modelitem => item.OffenceDescription)</td>
+                        <td>@Html.DisplayFor(modelitem => item.OffenceMethod)</td>
+                        <td>@Html.DisplayFor(modelitem => item.OffenceLocation)</td>
+                        <td class="text-center">
+                            <a asp-action="UpsertLegal" class="btn btn-primary" asp-route-legalId="@item.IdLegal">Edit</a>
+                        </td>
+                        <td class="text-center">
+                            <a class="btn btn-danger" onclick="deleteAlert('/Registrator/Home/Delete?pccoId=@item.IdPcco')">Delete</a>
+                        </td>
+                    </tr>
+                </tbody>
             }
         }
     </table>
 </div>
 
 <div id="noData" style="display: @noDataStyle; text-align: center">
-    <h4>Результаты, соответствующие Вашему запросу, не найдены.</h4>
+    <h4>No results found matching your search.</h4>
 </div>
 
 @section Scripts{
-    <script>
-        $(document).ready(function() {
-            $('#tableIndData').DataTable();
-        });
-    </script>
-    <script>
-        $(document).ready(function() {
-            $('#tableLegData').DataTable();
-        });
-    </script>
-    <script src="~/js/alerts.js"></script>
+    <script src="~/js/registratorTables.js"></script>
+    <script src="~/js/deleteAlert.js"></script>
 }

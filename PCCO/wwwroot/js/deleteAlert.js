@@ -1,4 +1,4 @@
-﻿function DeleteAlert(url) {
+﻿function deleteAlert(url) {
     Swal.fire({
         title: 'Are you sure?',
         text: "You won't be able to revert this!",
@@ -14,6 +14,7 @@
                 type: 'DELETE',
                 success: function (data) {
                     if (data.success) {
+                        dataTable.ajax.reload();
                         toastr.success(data.message);
                     }
                     else {

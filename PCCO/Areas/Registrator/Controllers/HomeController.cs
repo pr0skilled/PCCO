@@ -46,98 +46,95 @@ namespace PCCO.Areas.Registrator.Controllers
             return View(view);
         }
 
-        public IActionResult EditIndividual(int individualId)
+        public IActionResult UpsertIndividual(int? individualId)
         {
-            EditorIndividualViewModel? model = _service.GetIndividualById(individualId);
-            if (model == null)
-                return RedirectToAction(nameof(Error));
+            if (individualId == null || individualId == 0)
+                return View();
+            else
+            {
+                EditorIndividualViewModel? model = _service.GetIndividualById(individualId.Value);
+                if (model == null)
+                    return RedirectToAction(nameof(Error));
 
-            return View(model);
+                return View(model);
+            }
         }
 
-        public IActionResult EditLegal(int legalId)
+        public IActionResult UpsertLegal(int? legalId)
         {
-            EditorLegalViewModel? model = _service.GetLegalById(legalId);
-            if (model == null)
-                return RedirectToAction(nameof(Error));
+            if (legalId == null || legalId == 0)
+                return View();
+            else
+            {
+                EditorLegalViewModel? model = _service.GetLegalById(legalId.Value);
+                if (model == null)
+                    return RedirectToAction(nameof(Error));
 
-            return View(model);
+                return View(model);
+            }
         }
 
         [HttpPost]
-        public IActionResult EditIndividual(EditorIndividualViewModel model)
+        public IActionResult UpsertIndividual(EditorIndividualViewModel model)
         {
-            if (!ModelState.IsValid)
-                return View(model);
-            if (!_service.EditIndividual(model))
-                return RedirectToAction(nameof(Error));
-            else
+            if (ModelState.IsValid)
             {
+                if (model.IdPcco == 0)
+                {
+                    if (!_service.AddIndividual(model))
+                    {
+                        TempData["error"] = "Error occured while creating!";
+                        return View(model);
+                    }
+                    TempData["success"] = "Created successfully";
+                }
+                else
+                {
+                    if (!_service.EditIndividual(model))
+                    {
+                        TempData["error"] = "Error occured while updating!";
+                        return View(model);
+                    }
+                    TempData["success"] = "Updated successfully";
+                }
                 string url = string.Format("/Registrator/Home?lastName={0}&firstName={1}&middleName={2}&articleNumber={3}&courtSentenceNumber={4}&IsIndividual=true", model.LastName, model.FirstName, model.MiddleName, model.ArticleNumber, model.CourtSentenceNumber);
                 return Redirect(url);
             }
+            return View(model);
         }
 
         [HttpPost]
-        public IActionResult EditLegal(EditorLegalViewModel model)
+        public IActionResult UpsertLegal(EditorLegalViewModel model)
         {
-            if (!ModelState.IsValid)
-                return View(model);
-            if (!_service.EditLegal(model))
-                return RedirectToAction(nameof(Error));
-            else
+            if (ModelState.IsValid)
             {
+                if (model.IdPcco == 0)
+                {
+                    if (!_service.AddLegal(model))
+                    {
+                        TempData["error"] = "Error occured while creating!";
+                        return View(model);
+                    }
+                    TempData["success"] = "Created successfully";
+                }
+                else
+                {
+                    if (!_service.EditLegal(model))
+                    {
+                        TempData["error"] = "Error occured while updating!";
+                        return View(model);
+                    }
+                    TempData["success"] = "Updated successfully";
+                }
                 string url = string.Format("/Registrator/Home?name={0}&identificationCode={1}&IsIndividual=false", model.Name, model.IdentificationCode);
                 return Redirect(url);
             }
+            return View(model);
         }
 
-        public IActionResult CreateIndividual()
+        public IActionResult Delete(int pccoId)
         {
-            return View();
-        }
-
-        public IActionResult CreateLegal()
-        {
-            return View();
-        }
-
-        [HttpPost]
-        public IActionResult CreateIndividual(EditorIndividualViewModel model)
-        {
-            if (!ModelState.IsValid)
-                return View(model);
-            if (!_service.AddIndividual(model))
-            {
-                return View(model); //Add error notification
-            }
-            else
-            {
-                string url = string.Format("/Registrator/Home?lastName={0}&firstName={1}&middleName={2}&articleNumber={3}&courtSentenceNumber={4}&IsIndividual=true", model.LastName, model.FirstName, model.MiddleName, model.ArticleNumber, model.CourtSentenceNumber);
-                return Redirect(url);
-            }
-        }
-
-        [HttpPost]
-        public IActionResult CreateLegal(EditorLegalViewModel model)
-        {
-            if (!ModelState.IsValid)
-                return View(model);
-            if (!_service.AddLegal(model))
-            {
-                return View(model); //Add error notification
-            }
-            else
-            {
-                string url = string.Format("/Registrator/Home?name={0}&identificationCode={1}&IsIndividual=false", model.Name, model.IdentificationCode);
-                return Redirect(url);
-            }
-        }
-
-        [HttpDelete]
-        public IActionResult Delete(int id)
-        {
-            var responce = _service.DeletePcco(new DeletePccoRequest { Id = id });
+            var responce = _service.DeletePcco(new DeletePccoRequest { PccoId = pccoId });
             if (!responce.IsDeleted)
                 return Json(new { success = false, message = "Error while deleting" });
             return Json(new { success = true, message = "Deleted Successfuly" });

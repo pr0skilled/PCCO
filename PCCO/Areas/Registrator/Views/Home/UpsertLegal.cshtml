@@ -1,24 +1,10 @@
 ﻿@model PCCO.Models.ViewModels.EditorLegalViewModel
 @{
-    ViewBag.Title = "Create Legal";
-    //var properties = Model.GetType().GetProperties();
+    ViewBag.Title = @Model == null ? "Create Legal" : "Edit Legal";
 }
 
-<form asp-action="CreateLegal" asp-controller="Home" asp-area="Registrator" method="post">
+<form asp-action="UpsertLegal" asp-controller="Home" asp-area="Registrator" method="post">
     <div class="raw">
-        @*<div class="column">
-        @for (int i = 2; i < properties.Count(); i++)
-        {
-        @Html.Label(properties[i].Name)
-        <br />
-        @Html.TextBox(properties[i].Name, "")
-        @Html.ValidationMessage(properties[i].Name)
-        <br />
-        <br />
-        if (i == 10 || i == 19)
-        @Html.Raw("</div><div class=\"column\">")
-        }
-        </div>*@
         <div class="column">
             @Html.LabelFor(m => m.Name)
             <br />
@@ -68,12 +54,14 @@
             <br /><br />
             @Html.LabelFor(m => m.CriminalRecordCancellationDate)
             <br />
-            @Html.TextBoxFor(m => m.CriminalRecordCancellationDate, new {type="date"})
+            @Html.TextBoxFor(m => m.CriminalRecordCancellationDate,
+            new {type="date", onchange="updateRequirements('CriminalRecordCancellationDate', 'CriminalRecordCancellationReason')"})
             @Html.ValidationMessageFor(m => m.CriminalRecordCancellationDate)
             <br /><br />
             @Html.LabelFor(m => m.CriminalRecordCancellationReason)
             <br />
-            @Html.TextBoxFor(m => m.CriminalRecordCancellationReason)
+            @Html.TextBoxFor(m => m.CriminalRecordCancellationReason,
+            new {onchange="updateRequirements('CriminalRecordCancellationReason', 'CriminalRecordCancellationDate')"})
             @Html.ValidationMessageFor(m => m.CriminalRecordCancellationReason)
             <br /><br />
             @Html.LabelFor(m => m.CriminalActionType)
@@ -83,12 +71,14 @@
             <br /><br />
             @Html.LabelFor(m => m.CriminalActionCancellationDate)
             <br />
-            @Html.TextBoxFor(m => m.CriminalActionCancellationDate, new {type="date"})
+            @Html.TextBoxFor(m => m.CriminalActionCancellationDate,
+            new {type="date", onchange="updateRequirements('CriminalActionCancellationDate', 'CriminalActionCancellationReason')"})
             @Html.ValidationMessageFor(m => m.CriminalActionCancellationDate)
             <br /><br />
             @Html.LabelFor(m => m.CriminalActionCancellationReason)
             <br />
-            @Html.TextBoxFor(m => m.CriminalActionCancellationReason)
+            @Html.TextBoxFor(m => m.CriminalActionCancellationReason,
+            new {onchange="updateRequirements('CriminalActionCancellationReason', 'CriminalActionCancellationDate')"})
             @Html.ValidationMessageFor(m => m.CriminalActionCancellationReason)
             <br /><br />
             @Html.LabelFor(m => m.DisciplinaryActionType)
@@ -104,12 +94,14 @@
         <div class="column">
             @Html.LabelFor(m => m.DisciplinaryActionCancellationDate)
             <br />
-            @Html.TextBoxFor(m => m.DisciplinaryActionCancellationDate, new {type="date"})
+            @Html.TextBoxFor(m => m.DisciplinaryActionCancellationDate, new {type="date",
+            onchange="updateRequirements('DisciplinaryActionCancellationDate', 'DisciplinaryActionCancellationReason')"})
             @Html.ValidationMessageFor(m => m.DisciplinaryActionCancellationDate)
             <br /><br />
             @Html.LabelFor(m => m.DisciplinaryActionCancellationReason)
             <br />
-            @Html.TextBoxFor(m => m.DisciplinaryActionCancellationReason)
+            @Html.TextBoxFor(m => m.DisciplinaryActionCancellationReason,
+            new {onchange="updateRequirements('DisciplinaryActionCancellationReason', 'DisciplinaryActionCancellationDate')"})
             @Html.ValidationMessageFor(m => m.DisciplinaryActionCancellationReason)
             <br /><br />
             @Html.LabelFor(m => m.ArticleNumber)
@@ -141,9 +133,20 @@
             <br />
             @Html.TextBoxFor(m => m.OffenceLocation)
             @Html.ValidationMessageFor(m => m.OffenceLocation)
+            @{
+                if (ViewBag.Title == "Edit Legal")
+                {
+                    @Html.HiddenFor(m => m.IdPcco)
+                    @Html.HiddenFor(m => m.IsActive)
+                }
+            }
         </div>
     </div>
     <div>
-        <button type="submit" class="search-btn subscribe btn btn-primary btn-block shadow-sm"> Save </button>
+        <button type="button" id="btn-save" class="search-btn subscribe btn btn-primary btn-block shadow-sm"> Save </button>
     </div>
 </form>
+
+@section Scripts{
+    <script src="~/js/updateAlert.js"></script>
+}
