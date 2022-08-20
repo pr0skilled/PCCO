@@ -1,103 +1,89 @@
-﻿@model List<PCCO.Models.ViewModels.RegistratorDto>
+﻿@model List<Models.ApplicationUser>
 
-@{ ViewData["Title"] = "Create Registrator";
-    string[] fieldHeaders = new string[] { "First name", "Last name", "Middle name", "Identification code", "Work position", "Workplace", "Birthday", "Birthplace", "Residence", "Series", "Issuing authority code", "Unit name", "Department name", "Postal code", "City", "Street", "Building number", "Email", "Role" }; }
+@{
+    ViewData["Title"] = "Create Registrator";
+}
 
 <div class="text-center" style="margin-bottom: 10px;">
-        <a asp-action="CreateRegistrator" class="btn btn-primary">Create Registrator</a>
+    <a class="nav-link" id="register" asp-area="Identity" asp-page="/Account/Register">Register</a>
 </div>
 
-<div id="legalItemsList" style="text-align: center">
-    <table class="allTables" border="1">
-        <tr>
-            @for (int i = 0; i < fieldHeaders.Length; ++i)
-            {
-                <th>
-                    @fieldHeaders[i]
-                </th>
-            }
-            <th>
-                Edit
-            </th>
-            <th>
-                Delete
-            </th>
-        </tr>
-        @if (Model is null || Model.Count() == 0)
-        {
-            <a>No content</a>
-        }
-        else
-        {
-            foreach (var item in Model)
-            {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelitem => item.FirstName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelitem => item.LastName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelitem => item.MiddleName)
-        </td>
-        <td>
-            @Html.DisplayTextFor(modelitem => item.IdentificationCode)
-        </td>
-        <td>
-            @Html.DisplayFor(modelitem => item.WorkPosition)
-        </td>
-        <td>
-            @Html.DisplayFor(modelitem => item.Workplace)
-        </td>
-        <td>
-            @Html.DisplayFor(modelitem => item.Birthday)
-        </td>
-        <td>
-            @Html.DisplayFor(modelitem => item.Birthplace)
-        </td>
-        <td>
-            @Html.DisplayFor(modelitem => item.Residence)
-        </td>
-        <td>
-            @Html.DisplayFor(modelitem => item.Series)
-        </td>
-        <td>
-            @Html.DisplayFor(modelitem => item.Code)
-        </td>
-        <td>
-            @Html.DisplayFor(modelitem => item.UnitName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelitem => item.DepartmentName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelitem => item.PostalCode)
-        </td>
-        <td>
-            @Html.DisplayFor(modelitem => item.City)
-        </td>
-        <td>
-            @Html.DisplayFor(modelitem => item.Street)
-        </td>
-        <td>
-            @Html.DisplayFor(modelitem => item.BuildingNumber)
-        </td>
-        <td>
-            @Html.DisplayFor(modelitem => item.Email)
-        </td>
-        <td>
-            @Html.DisplayFor(modelitem => item.Role)
-        </td>
-            @Html.HiddenFor(modelitem => item.UserId)
-        <td class="text-center">
-            <a asp-action="EditRegistrator" class="btn btn-primary" asp-route-id="@item.UserId">Edit</a>
-        </td>
-        <td class="text-center">
-            <a asp-action="Delete" class="btn btn-danger" asp-route-id="@item.UserId">Delete</a>
-        </td>
-    </tr>
-            }
-        }
-    </table>
+<div class="container py-5">
+    <div class="row">
+        <div class="col-lg-6 mx-auto">
+            <div class="card ">
+                <div class="card-header pt-4">
+                    <div class="tab-content" id="pills-tabContent" style="text-align:left">
+                        <div class="tab-pane fade show active" id="pills-individual" role="tabpanel" aria-labelledby="pills-individual-tab">
+                            <form asp-action="Index" asp-controller="Home" asp-area="Administrator" method="get">
+                                <div class="form-group">
+                                    <label for="lastName">
+                                        <h6>Last name</h6>
+                                    </label>
+                                    <input type="text" id="lastName" name="lastName" class="form-control ">
+                                </div>
+                                <div class="form-group">
+                                    <label for="idCode">
+                                        <h6>Identification code</h6>
+                                    </label>
+                                    <input type="text" data-val-length-max="10" data-val-length-min="10" data-val-range-max="9999999999" data-val-range-min="1" id="idCode" name="idCode" class="form-control ">
+                                </div>
+                                <div>
+                                    <button type="submit" class="search-btn subscribe btn btn-primary btn-block shadow-sm"> Search </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+
+@if (Model.Count() != 0)
+{
+    <div id="registratorsList" style="text-align: center">
+        <table id="regTable" class="cell-border hover">
+            <thead>
+                <tr>
+                    <th>@Html.Label("Fullname")</th>
+                    <th>@Html.Label("Email")</th>
+                    <th>@Html.Label("Identification code")</th>
+                    <th>@Html.Label("Workplace")</th>
+                    <th>@Html.Label("Work position")</th>
+                    <th>@Html.Label("Phone number")</th>
+                    <th>@Html.Label("Birthday")</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            @foreach (var item in Model)
+            {
+                <tbody>
+                    <tr>
+                        <td>@Html.DisplayTextFor(modelitem => item.UserName)</td>
+                        <td>@Html.DisplayFor(modelitem => item.Email)</td>
+                        <td>@Html.DisplayTextFor(modelitem => item.IdentificationCode)</td>
+                        <td>@Html.DisplayFor(modelitem => item.Workplace)</td>
+                        <td>@Html.DisplayFor(modelitem => item.WorkPosition)</td>
+                        <td>@Html.DisplayFor(modelitem => item.PhoneNumber)</td>
+                        <td>@Html.DisplayFor(modelitem => item.Birthday)</td>
+                        @Html.HiddenFor(modelitem => item.Id)
+                        <td class="text-center">
+
+                            <a asp-action="Delete" class="btn btn-danger" asp-route-id="@item.Id"><i class="bi bi-trash-fill"></i>Delete</a>
+                        </td>
+                    </tr>
+                </tbody>
+            }
+        </table>
+    </div>
+}
+
+@section Scripts
+    {
+    <script>
+        $(document).ready(function() {
+            $('#regTable').DataTable();
+        });
+    </script>
+}

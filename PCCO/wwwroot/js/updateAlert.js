@@ -9,7 +9,7 @@
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes, update it!'
+            confirmButtonText: 'Yes, I\'m sure!'
         }).then((result) => {
             if (result.isConfirmed) {
                 form.submit();
@@ -17,6 +17,5 @@
                 e.preventDefault();
             }
         });
-
     });
 });

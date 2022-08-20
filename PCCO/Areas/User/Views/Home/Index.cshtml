@@ -1,27 +1,14 @@
 ﻿@model PCCO.Models.ViewModels.UserViewModel
 @{
     ViewBag.Title = "Index";
+    string noDataStyle = "none";
+    if (ViewBag.NoData == null && Model.Individual.Count() == 0 && Model.Legal.Count() == 0)
+        noDataStyle = "";
 }
-@{
-    string indStyle = "none"; string legStyle = "none"; string noDataStyle = "";
 
-    if (Model.Individual.Count() > 0)
-    {
-        indStyle = "";
-        noDataStyle = "none";
-    }
-    else if (Model.Legal.Count() > 0)
-    {
-        legStyle = "";
-        noDataStyle = "none";
-    }
-
-    if (ViewBag.NoData != null)
-        noDataStyle = "none";
-}
-<div class="container py-5" style="max-width: none">
+<div class="container py-5">
     <div class="row">
-        <div class="col-lg-6 mx-auto" style="max-width: 30%">
+        <div class="col-lg-6 mx-auto">
             <div class="card ">
                 <div class="card-header pt-4">
                     <div class="bg-white shadow-sm pl-2 pr-2">
@@ -37,13 +24,13 @@
 
                     <div class="tab-content" id="pills-tabContent" style="text-align:left">
                         <div class="tab-pane fade show active" id="pills-individual" role="tabpanel" aria-labelledby="pills-individual-tab">
-                            <form asp-action="Index" asp-controller="Home" asp-area="User" method="get" onsubmit="showIndividualFunc()">
+                            <form asp-action="Index" asp-controller="Home" asp-area="User" method="get">
                                 @await Html.PartialAsync("_PartialSearchInd")
                             </form>
                         </div>
 
                         <div class="tab-pane fade" id="pills-legal" role="tabpanel" aria-labelledby="pills-legal-tab">
-                            <form asp-action="Index" asp-controller="Home" asp-area="User" method="get" onsubmit="showLegalFunc()">
+                            <form asp-action="Index" asp-controller="Home" asp-area="User" method="get">
                                 @await Html.PartialAsync("_PartialSearchLeg")
                             </form>
                         </div>
@@ -55,10 +42,10 @@
     </div>
 </div>
 
-<div id="individualItemsList" style="display:@indStyle; text-align: center;">
-    <table id="tblIndData" class="cell-border hover compact">
-        @if (Model.Individual.Count() != 0)
-        {
+@if (Model.Individual.Count() != 0)
+{
+    <div id="individualItemsList">
+        <table id="tableUserIndData" style="text-align: center;" class="cell-border hover">
             <thead>
                 <tr>
                     <th>Fullname</th>
@@ -77,14 +64,12 @@
                 </tr>
             </thead>
 
-            foreach (var item in Model.Individual)
+            @foreach (var item in Model.Individual)
             {
                 <tbody>
                     <tr id="@item.GetHashCode()" onclick="expandRow(this.id)">
                         <td>
-                            @Html.DisplayFor(modelitem => item.LastName)
-                            @Html.DisplayFor(modelitem => item.FirstName)
-                            @Html.DisplayFor(modelitem => item.MiddleName)
+                            @Html.DisplayFor(modelitem => item.LastName) @Html.DisplayFor(modelitem => item.FirstName) @Html.DisplayFor(modelitem => item.MiddleName)
                         </td>
                         <td>@Html.DisplayFor(modelitem => item.WorkPosition)</td>
                         <td>@Html.DisplayFor(modelitem => item.Workplace)</td>
@@ -101,14 +86,14 @@
                     </tr>
                 </tbody>
             }
-        }
-    </table>
-</div>
+        </table>
+    </div>
+}
 
-<div id="legalItemsList" style="display: @legStyle;">
-    <table id="tblLegData" class="cell-border hover compact">
-        @if (Model.Legal.Count() != 0)
-        {
+@if (Model.Legal.Count() != 0)
+{
+    <div id="legalItemsList" style="text-align: center;">
+        <table id="tableUserLegData" class="cell-border hover">
             <thead>
                 <tr>
                     <th>Name</th>
@@ -117,20 +102,20 @@
                     <th>Disciplinary action details</th>
                 </tr>
             </thead>
-            foreach (var item in Model.Legal)
-            {
-                <tbody>
+            <tbody>
+                @foreach (var item in Model.Legal)
+                {
                     <tr id="@item.GetHashCode()" onclick="expandRow(this.id)">
                         <td>@Html.DisplayFor(modelitem => item.Name)</td>
                         <td>@Html.DisplayFor(modelitem => item.IdentificationCode)</td>
                         <td>@Html.DisplayFor(modelitem => item.OffenceDescription)</td>
                         <td>@Html.DisplayFor(modelitem => item.DisciplinaryActionDetails)</td>
                     </tr>
-                </tbody>
-            }
-        }
-    </table>
-</div>
+                }
+            </tbody>
+        </table>
+    </div>
+}
 
 <div id="noData" style="display: @noDataStyle; text-align: center">
     <h4>No results found matching your search.</h4>

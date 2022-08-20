@@ -1,24 +1,11 @@
 ﻿@model PCCO.Models.ViewModels.EditorViewModel
-
 @{
     ViewBag.Title = "Registrator";
     string[] indFields = new string[] { "Fullname", "Identification code", "Work position", "Workplace", "Birthday", "Birthplace", "Residence", "Series", "Court name", "Court case number", "Court sentence date", "Court sentence number", "Court sentence applying date", "Criminal record cancellation date", "Criminal record cancellation reason", "Criminal action type", "Criminal action cancellation date", "Criminal action cancellation reason", "Disciplinary action type", "Disciplinary action details", "Disciplinary action cancellation date", "Disciplinary action cancellation reason", "Article number", "Article title", "Article content", "Offence description", "Offence method", "Offence location", "Passport issuing authority" };
     string[] legFields = new string[] { "Name", "Identification code", "Legal form", "Is resident", "Court name", "Court case number", "Court sentence date", "Court sentence number", "Court sentence applying date", "Criminal record cancellation date", "Criminal record cancellation reason", "Criminal action type", "Criminal action cancellation date", "Criminal action cancellation reason", "Disciplinary action type", "Disciplinary action details", "Disciplinary action cancellation date", "Disciplinary action cancellation reason", "Article number", "Article title", "Article content", "Offence description", "Offence method", "Offence location" };
-    string indStyle = "none"; string legStyle = "none"; string noDataStyle = "";
-
-    if (Model.Individual.Count() > 0)
-    {
-        indStyle = "";
-        noDataStyle = "none";
-    }
-    else if (Model.Legal.Count() > 0)
-    {
-        legStyle = "";
-        noDataStyle = "none";
-    }
-
-    if (ViewBag.NoData != null)
-        noDataStyle = "none";
+    string noDataStyle = "none";
+    if (ViewBag.NoData == null && Model.Individual.Count() == 0 && Model.Legal.Count() == 0)
+        noDataStyle = "";
 }
 
 <div class="container py-5">
@@ -45,13 +32,13 @@
 
                     <div class="tab-content" id="pills-tabContent" style="text-align:left">
                         <div class="tab-pane fade show active" id="pills-individual" role="tabpanel" aria-labelledby="pills-individual-tab">
-                            <form asp-action="Index" asp-controller="Home" asp-area="Registrator" method="get" onsubmit="showIndividualFunc()">
+                            <form asp-action="Index" asp-controller="Home" asp-area="Registrator" method="get">
                                 @await Html.PartialAsync("_PartialSearchInd")
                             </form>
                         </div>
 
                         <div class="tab-pane fade" id="pills-legal" role="tabpanel" aria-labelledby="pills-legal-tab">
-                            <form asp-action="Index" asp-controller="Home" asp-area="Registrator" method="get" onsubmit="showLegalFunc()">
+                            <form asp-action="Index" asp-controller="Home" asp-area="Registrator" method="get">
                                 @await Html.PartialAsync("_PartialSearchLeg")
                             </form>
                         </div>
@@ -63,10 +50,10 @@
     </div>
 </div>
 
-<div id="individualItemsList" style="display:@indStyle; text-align: center;">
-    <table id="tableIndData" class="cell-border hover">
-        @if (Model.Individual.Count() != 0)
-        {
+@if (Model.Individual.Count() != 0)
+{
+    <div id="individualItemsList" style="text-align: center;">
+        <table id="tableIndData" class="cell-border hover compact">
             <thead>
                 <tr>
                     @for (int i = 0; i < indFields.Length; ++i)
@@ -77,14 +64,12 @@
                 </tr>
             </thead>
 
-            foreach (var item in Model.Individual)
+            @foreach (var item in Model.Individual)
             {
                 <tbody>
                     <tr id="@item.GetHashCode()" onclick="expandRow(this.id)">
                         <td>
-                            @Html.DisplayFor(modelitem => item.FirstName)
-                            @Html.DisplayFor(modelitem => item.LastName)
-                            @Html.DisplayFor(modelitem => item.MiddleName)
+                            @Html.DisplayFor(modelitem => item.FirstName) @Html.DisplayFor(modelitem => item.LastName) @Html.DisplayFor(modelitem => item.MiddleName)
                         </td>
                         <td>@Html.DisplayFor(modelitem => item.IdentificationCode)</td>
                         <td>@Html.DisplayFor(modelitem => item.WorkPosition)</td>
@@ -113,15 +98,7 @@
                         <td>@Html.DisplayFor(modelitem => item.OffenceDescription)</td>
                         <td>@Html.DisplayFor(modelitem => item.OffenceMethod)</td>
                         <td>@Html.DisplayFor(modelitem => item.OffenceLocation)</td>
-                        <td>
-                            @Html.DisplayFor(modelitem => item.UnitName),
-                            code: @Html.DisplayFor(modelitem => item.Code),
-                            department name: @Html.DisplayFor(modelitem => item.DepartmentName),
-                            address: @Html.DisplayFor(modelitem => item.PostalCode),
-                            @Html.DisplayFor(modelitem => item.City),
-                            @Html.DisplayFor(modelitem => item.Street),
-                            @Html.DisplayFor(modelitem => item.BuildingNumber)
-                        </td>
+                        <td>@Html.DisplayFor(modelitem => item.UnitName), code: @Html.DisplayFor(modelitem => item.Code), department name: @Html.DisplayFor(modelitem => item.DepartmentName), address: @Html.DisplayFor(modelitem => item.PostalCode), @Html.DisplayFor(modelitem => item.City), @Html.DisplayFor(modelitem => item.Street), @Html.DisplayFor(modelitem => item.BuildingNumber)</td>
                         <td>
                             <a asp-action="UpsertIndividual" class="btn btn-primary mb-1" asp-route-individualId="@item.IdIndividual"><i class="bi bi-pencil-square"></i> Edit</a>
                             <a class="btn btn-danger" onclick="deleteAlert('/Registrator/Home/Delete?pccoId={@item.IdPcco}')"><i class="bi bi-trash-fill"></i> Delete</a>
@@ -129,25 +106,25 @@
                     </tr>
                 </tbody>
             }
-        }
-    </table>
-</div>
+        </table>
+    </div>
+}
 
-<div id="legalItemsList" style="display: @legStyle; text-align: center;">
-    <table id="tableLegData" class="cell-border hover compact">
-        @if (Model.Legal.Count() != 0)
-        {
+@if (Model.Legal.Count() != 0)
+{
+    <div id="legalItemsList" style="text-align: center;">
+        <table id="tableLegData" class="cell-border hover compact">
             <thead>
                 <tr>
                     @for (int i = 0; i < legFields.Length; ++i)
                     {
                         <th>@legFields[i]</th>
                     }
-                    <th>Edit</th>
-                    <th>Delete</th>
+                    <th>Actions</th>
+
                 </tr>
             </thead>
-            foreach (var item in Model.Legal)
+            @foreach (var item in Model.Legal)
             {
                 <tbody>
                     <tr id="@item.GetHashCode()" onclick="expandRow(this.id)">
@@ -176,17 +153,15 @@
                         <td>@Html.DisplayFor(modelitem => item.OffenceMethod)</td>
                         <td>@Html.DisplayFor(modelitem => item.OffenceLocation)</td>
                         <td class="text-center">
-                            <a asp-action="UpsertLegal" class="btn btn-primary" asp-route-legalId="@item.IdLegal">Edit</a>
-                        </td>
-                        <td class="text-center">
-                            <a class="btn btn-danger" onclick="deleteAlert('/Registrator/Home/Delete?pccoId=@item.IdPcco')">Delete</a>
+                            <a asp-action="UpsertLegal" class="btn btn-primary" asp-route-legalId="@item.IdLegal"><i class="bi bi-pencil-square"></i> Edit</a>
+                            <a class="btn btn-danger" onclick="deleteAlert('/Registrator/Home/Delete?pccoId=@item.IdPcco')"><i class="bi bi-trash-fill"></i> Delete</a>
                         </td>
                     </tr>
                 </tbody>
             }
-        }
-    </table>
-</div>
+        </table>
+    </div>
+}
 
 <div id="noData" style="display: @noDataStyle; text-align: center">
     <h4>No results found matching your search.</h4>

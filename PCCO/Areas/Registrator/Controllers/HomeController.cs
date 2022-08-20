@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using PCCO.Models.Messages.Request.RegistratorPage;
 using PCCO.Models.Messages.Request.UserPage;
 using PCCO.Models.Messages.Response.RegistratorPage;
@@ -8,6 +9,7 @@ using PCCO.Services.Interfaces;
 namespace PCCO.Areas.Registrator.Controllers
 {
     [Area("Registrator")]
+    //[Authorize(Roles = "Registrator")]
     public class HomeController : Controller
     {
         private readonly IRegistratorPageService _service;
