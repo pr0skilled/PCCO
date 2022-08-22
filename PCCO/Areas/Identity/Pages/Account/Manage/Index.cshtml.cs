@@ -6,17 +6,18 @@ using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using PCCO.Models;
 
 namespace PCCO.Web.Areas.Identity.Pages.Account.Manage
 {
     public class IndexModel : PageModel
     {
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
 
         public IndexModel(
-            UserManager<IdentityUser> userManager,
-            SignInManager<IdentityUser> signInManager)
+            UserManager<ApplicationUser> userManager,
+            SignInManager<ApplicationUser> signInManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -24,6 +25,14 @@ namespace PCCO.Web.Areas.Identity.Pages.Account.Manage
 
         [Display(Name = "Name")]
         public string Username { get; set; }
+        public DateTime Birthday { get; set; }
+
+        [Display(Name = "Identification code")]
+        public string IdentificationCode { get; set; }
+        public string Workplace { get; set; }
+
+        [Display(Name = "Work position")]
+        public string WorkPosition { get; set; }
 
         public string StatusMessage { get; set; }
 
@@ -36,19 +45,17 @@ namespace PCCO.Web.Areas.Identity.Pages.Account.Manage
             [Display(Name = "Phone number")]
             [RegularExpression(@"^(?:\+38)?(0[5-9][0-9]\d{7})$", ErrorMessage = "Phone number should be in format '+380XXXXXXXXX'")]
             public string PhoneNumber { get; set; }
-
-            public DateTime Birthday { get; set; }
-            public string IdentificationCode { get; set; }
-            public string Workplace { get; set; }
-            public string WorkPosition { get; set; }
         }
 
-        private async Task LoadAsync(IdentityUser user)
+        private async Task LoadAsync(ApplicationUser user)
         {
-            var userName = await _userManager.GetUserNameAsync(user);
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
 
-            Username = userName;
+            Username = user.UserName;
+            Birthday = user.Birthday;
+            IdentificationCode = user.IdentificationCode;
+            Workplace = user.Workplace;
+            WorkPosition = user.WorkPosition;
 
             Input = new InputModel
             {

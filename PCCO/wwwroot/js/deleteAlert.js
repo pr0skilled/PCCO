@@ -15,10 +15,6 @@
                 success: function (data) {
                     if (data.success) {
                         dataTable.ajax.reload();
-                        toastr.success(data.message);
-                    }
-                    else {
-                        toastr.error(data.message);
                     }
                 }
             });

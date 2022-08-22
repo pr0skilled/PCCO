@@ -4,146 +4,120 @@
 }
 
 <form asp-action="UpsertLegal" asp-controller="Home" asp-area="Registrator" method="post">
-    <div class="raw">
-        <div class="column">
-            @Html.LabelFor(m => m.Name)
-            <br />
-            @Html.TextBoxFor(m => m.Name)
-            @Html.ValidationMessageFor(m => m.Name)
-            <br /><br />
-            @Html.LabelFor(m => m.IdentificationCode)
-            <br />
-            @Html.TextBoxFor(m => m.IdentificationCode)
-            @Html.ValidationMessageFor(m => m.IdentificationCode)
-            <br /><br />
-            @Html.LabelFor(m => m.LegalForm)
-            <br />
-            @Html.TextBoxFor(m => m.LegalForm)
-            @Html.ValidationMessageFor(m => m.LegalForm)
-            <br /><br />
-            @Html.LabelFor(m => m.IsResident)
-            <br />
-            @Html.CheckBoxFor(m => m.IsResident, true)
-            @Html.ValidationMessageFor(m => m.IsResident)
-            <br /><br />
-            @Html.LabelFor(m => m.CourtName)
-            <br />
-            @Html.TextBoxFor(m => m.CourtName)
-            @Html.ValidationMessageFor(m => m.CourtName)
-            <br /><br />
-            @Html.LabelFor(m => m.CourtCaseNumber)
-            <br />
-            @Html.TextBoxFor(m => m.CourtCaseNumber)
-            @Html.ValidationMessageFor(m => m.CourtCaseNumber)
-            <br /><br />
-            @Html.LabelFor(m => m.CourtSentenceDate)
-            <br />
-            @Html.TextBoxFor(m => m.CourtSentenceDate, new {type="date"})
-            @Html.ValidationMessageFor(m => m.CourtSentenceDate)
-            <br /><br />
-            @Html.LabelFor(m => m.CourtSentenceNumber)
-            <br />
-            @Html.TextBoxFor(m => m.CourtSentenceNumber)
-            @Html.ValidationMessageFor(m => m.CourtSentenceNumber)
-        </div>
-        <div class="column">
-            @Html.LabelFor(m => m.CourtSentenceApplyingDate)
-            <br />
-            @Html.TextBoxFor(m => m.CourtSentenceApplyingDate, new {type="date"})
-            @Html.ValidationMessageFor(m => m.CourtSentenceApplyingDate)
-            <br /><br />
-            @Html.LabelFor(m => m.CriminalRecordCancellationDate)
-            <br />
-            @Html.TextBoxFor(m => m.CriminalRecordCancellationDate,
-            new {type="date", onchange="updateRequirements('CriminalRecordCancellationDate', 'CriminalRecordCancellationReason')"})
-            @Html.ValidationMessageFor(m => m.CriminalRecordCancellationDate)
-            <br /><br />
-            @Html.LabelFor(m => m.CriminalRecordCancellationReason)
-            <br />
-            @Html.TextBoxFor(m => m.CriminalRecordCancellationReason,
-            new {onchange="updateRequirements('CriminalRecordCancellationReason', 'CriminalRecordCancellationDate')"})
-            @Html.ValidationMessageFor(m => m.CriminalRecordCancellationReason)
-            <br /><br />
-            @Html.LabelFor(m => m.CriminalActionType)
-            <br />
-            @Html.TextBoxFor(m => m.CriminalActionType)
-            @Html.ValidationMessageFor(m => m.CriminalActionType)
-            <br /><br />
-            @Html.LabelFor(m => m.CriminalActionCancellationDate)
-            <br />
-            @Html.TextBoxFor(m => m.CriminalActionCancellationDate,
-            new {type="date", onchange="updateRequirements('CriminalActionCancellationDate', 'CriminalActionCancellationReason')"})
-            @Html.ValidationMessageFor(m => m.CriminalActionCancellationDate)
-            <br /><br />
-            @Html.LabelFor(m => m.CriminalActionCancellationReason)
-            <br />
-            @Html.TextBoxFor(m => m.CriminalActionCancellationReason,
-            new {onchange="updateRequirements('CriminalActionCancellationReason', 'CriminalActionCancellationDate')"})
-            @Html.ValidationMessageFor(m => m.CriminalActionCancellationReason)
-            <br /><br />
-            @Html.LabelFor(m => m.DisciplinaryActionType)
-            <br />
-            @Html.TextBoxFor(m => m.DisciplinaryActionType)
-            @Html.ValidationMessageFor(m => m.DisciplinaryActionType)
-            <br /><br />
-            @Html.LabelFor(m => m.DisciplinaryActionDetails)
-            <br />
-            @Html.TextBoxFor(m => m.DisciplinaryActionDetails)
-            @Html.ValidationMessageFor(m => m.DisciplinaryActionDetails)
-        </div>
-        <div class="column">
-            @Html.LabelFor(m => m.DisciplinaryActionCancellationDate)
-            <br />
-            @Html.TextBoxFor(m => m.DisciplinaryActionCancellationDate, new {type="date",
-            onchange="updateRequirements('DisciplinaryActionCancellationDate', 'DisciplinaryActionCancellationReason')"})
-            @Html.ValidationMessageFor(m => m.DisciplinaryActionCancellationDate)
-            <br /><br />
-            @Html.LabelFor(m => m.DisciplinaryActionCancellationReason)
-            <br />
-            @Html.TextBoxFor(m => m.DisciplinaryActionCancellationReason,
-            new {onchange="updateRequirements('DisciplinaryActionCancellationReason', 'DisciplinaryActionCancellationDate')"})
-            @Html.ValidationMessageFor(m => m.DisciplinaryActionCancellationReason)
-            <br /><br />
-            @Html.LabelFor(m => m.ArticleNumber)
-            <br />
-            @Html.TextBoxFor(m => m.ArticleNumber)
-            @Html.ValidationMessageFor(m => m.ArticleNumber)
-            <br /><br />
-            @Html.LabelFor(m => m.ArticleTitle)
-            <br />
-            @Html.TextBoxFor(m => m.ArticleTitle)
-            @Html.ValidationMessageFor(m => m.ArticleTitle)
-            <br /><br />
-            @Html.LabelFor(m => m.ArticleContent)
-            <br />
-            @Html.TextBoxFor(m => m.ArticleContent)
-            @Html.ValidationMessageFor(m => m.ArticleContent)
-            <br /><br />
-            @Html.LabelFor(m => m.OffenceDescription)
-            <br />
-            @Html.TextBoxFor(m => m.OffenceDescription)
-            @Html.ValidationMessageFor(m => m.OffenceDescription)
-            <br /><br />
-            @Html.LabelFor(m => m.OffenceMethod)
-            <br />
-            @Html.TextBoxFor(m => m.OffenceMethod)
-            @Html.ValidationMessageFor(m => m.OffenceMethod)
-            <br /><br />
-            @Html.LabelFor(m => m.OffenceLocation)
-            <br />
-            @Html.TextBoxFor(m => m.OffenceLocation)
-            @Html.ValidationMessageFor(m => m.OffenceLocation)
-            @{
-                if (ViewBag.Title == "Edit Legal")
-                {
-                    @Html.HiddenFor(m => m.IdPcco)
-                    @Html.HiddenFor(m => m.IsActive)
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <label asp-for="Name" class="form-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+
+                <label asp-for="IdentificationCode" class="form-label"></label>
+                <input asp-for="IdentificationCode" class="form-control" />
+                <span asp-validation-for="IdentificationCode" class="text-danger"></span>
+
+                <label asp-for="LegalForm" class="form-label"></label>
+                <input asp-for="LegalForm" class="form-control" />
+                <span asp-validation-for="LegalForm" class="text-danger"></span>
+
+                <label asp-for="CourtName" class="form-label"></label>
+                <input asp-for="CourtName" class="form-control" />
+                <span asp-validation-for="CourtName" class="text-danger"></span>
+
+                <label asp-for="CourtCaseNumber" class="form-label"></label>
+                <input asp-for="CourtCaseNumber" class="form-control" />
+                <span asp-validation-for="CourtCaseNumber" class="text-danger"></span>
+
+                <label asp-for="CourtSentenceDate" class="form-label"></label>
+                <input asp-for="CourtSentenceDate" type="date" class="form-control" />
+                <span asp-validation-for="CourtSentenceDate" class="text-danger"></span>
+
+                <label asp-for="CourtSentenceNumber" class="form-label"></label>
+                <input asp-for="CourtSentenceNumber" class="form-control" />
+                <span asp-validation-for="CourtSentenceNumber" class="text-danger"></span>
+
+                <label asp-for="CourtSentenceApplyingDate" class="form-label"></label>
+                <input asp-for="CourtSentenceApplyingDate" type="date" class="form-control" />
+                <span asp-validation-for="CourtSentenceApplyingDate" class="text-danger"></span>
+            </div>
+            <div class="col">
+                <label asp-for="CriminalRecordCancellationDate" class="form-label"></label>
+                <input asp-for="CriminalRecordCancellationDate" type="date" class="form-control" onchange="updateRequirements('CriminalRecordCancellationDate', 'CriminalRecordCancellationReason')" />
+                <span asp-validation-for="CriminalRecordCancellationDate" class="text-danger"></span>
+
+                <label asp-for="CriminalRecordCancellationReason" class="form-label"></label>
+                <input asp-for="CriminalRecordCancellationReason" class="form-control" onchange="updateRequirements('CriminalRecordCancellationReason', 'CriminalRecordCancellationDate')" />
+                <span asp-validation-for="CriminalRecordCancellationReason" class="text-danger"></span>
+
+                <label asp-for="CriminalActionType" class="form-label"></label>
+                <input asp-for="CriminalActionType" class="form-control" />
+                <span asp-validation-for="CriminalActionType" class="text-danger"></span>
+
+                <label asp-for="CriminalActionCancellationDate" class="form-label"></label>
+                <input asp-for="CriminalActionCancellationDate" type="date" class="form-control" onchange="updateRequirements('CriminalActionCancellationDate', 'CriminalActionCancellationReason')" />
+                <span asp-validation-for="CriminalActionCancellationDate" class="text-danger"></span>
+
+                <label asp-for="CriminalActionCancellationReason" class="form-label"></label>
+                <input asp-for="CriminalActionCancellationReason" class="form-control" onchange="updateRequirements('CriminalActionCancellationReason', 'CriminalActionCancellationDate')" />
+                <span asp-validation-for="CriminalActionCancellationReason" class="text-danger"></span>
+
+                <label asp-for="DisciplinaryActionType" class="form-label"></label>
+                <input asp-for="DisciplinaryActionType" class="form-control" />
+                <span asp-validation-for="DisciplinaryActionType" class="text-danger"></span>
+
+                <label asp-for="DisciplinaryActionDetails" class="form-label"></label>
+                <input asp-for="DisciplinaryActionDetails" class="form-control" />
+                <span asp-validation-for="DisciplinaryActionDetails" class="text-danger"></span>
+
+                <label asp-for="DisciplinaryActionCancellationDate" class="form-label"></label>
+                <input asp-for="DisciplinaryActionCancellationDate" type="date" class="form-control" onchange="updateRequirements('DisciplinaryActionCancellationDate', 'DisciplinaryActionCancellationReason')" />
+                <span asp-validation-for="DisciplinaryActionCancellationDate" class="text-danger"></span>
+            </div>
+            <div class="col">
+                <label asp-for="DisciplinaryActionCancellationReason" class="form-label"></label>
+                <input asp-for="DisciplinaryActionCancellationReason" class="form-control" onchange="updateRequirements('DisciplinaryActionCancellationReason', 'DisciplinaryActionCancellationDate')" />
+                <span asp-validation-for="DisciplinaryActionCancellationReason" class="text-danger"></span>
+
+                <label asp-for="ArticleNumber" class="form-label"></label>
+                <input asp-for="ArticleNumber" class="form-control" />
+                <span asp-validation-for="ArticleNumber" class="text-danger"></span>
+
+                <label asp-for="ArticleTitle" class="form-label"></label>
+                <input asp-for="ArticleTitle" class="form-control" />
+                <span asp-validation-for="ArticleTitle" class="text-danger"></span>
+
+                <label asp-for="ArticleContent" class="form-label"></label>
+                <input asp-for="ArticleContent" class="form-control" />
+                <span asp-validation-for="ArticleContent" class="text-danger"></span>
+
+                <label asp-for="OffenceDescription" class="form-label"></label>
+                <input asp-for="OffenceDescription" class="form-control" />
+                <span asp-validation-for="OffenceDescription" class="text-danger"></span>
+
+                <label asp-for="OffenceMethod" class="form-label"></label>
+                <input asp-for="OffenceMethod" class="form-control" />
+                <span asp-validation-for="OffenceMethod" class="text-danger"></span>
+
+                <label asp-for="OffenceLocation" class="form-label"></label>
+                <input asp-for="OffenceLocation" class="form-control" />
+                <span asp-validation-for="OffenceLocation" class="text-danger"></span>
+
+                <label asp-for="IsResident" class="form-label"></label>
+                <br />
+                <input asp-for="IsResident" type="checkbox" checked />
+                <span asp-validation-for="IsResident" class="text-danger"></span>
+                <br />
+                @{
+                    if (ViewBag.Title == "Edit Legal")
+                    {
+                        <input asp-for="IdPcco" type="hidden" />
+                        <input asp-for="IsActive" type="hidden" />
+                    }
                 }
-            }
+            </div>
+            <div>
+                <button type="button" id="btn-save" class="search-btn subscribe btn btn-primary btn-block shadow-sm"> Save </button>
+            </div>
         </div>
-    </div>
-    <div>
-        <button type="button" id="btn-save" class="search-btn subscribe btn btn-primary btn-block shadow-sm"> Save </button>
     </div>
 </form>
 

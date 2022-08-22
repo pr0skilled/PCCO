@@ -4,7 +4,7 @@ using PCCO.DataAccess;
 using PCCO.Models.Extensions;
 using PCCO.Utility;
 using Microsoft.AspNetCore.Identity.UI.Services;
-using Stripe;
+using PCCO.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,7 +12,7 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<PCCOContext>(options => options.UseSqlServer(
     builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.Configure<StripeSettings>(builder.Configuration.GetSection("Stripe"));
-builder.Services.AddIdentity<IdentityUser, IdentityRole>()
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = false) //change on deploy
     .AddDefaultTokenProviders()
     .AddEntityFrameworkStores<PCCOContext>()
     .AddDefaultUI();

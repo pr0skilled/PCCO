@@ -9,7 +9,7 @@ using PCCO.Services.Interfaces;
 namespace PCCO.Areas.Registrator.Controllers
 {
     [Area("Registrator")]
-    //[Authorize(Roles = "Registrator")]
+    [Authorize(Roles = "Registrator")]
     public class HomeController : Controller
     {
         private readonly IRegistratorPageService _service;
