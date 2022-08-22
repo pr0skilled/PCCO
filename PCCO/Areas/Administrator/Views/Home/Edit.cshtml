@@ -1,0 +1,49 @@
+﻿@model PCCO.Models.ApplicationUser
+@{
+    ViewBag.Title = "Edit Registrator";
+}
+
+<form asp-action="Edit" asp-controller="Home" asp-area="Administrator" method="post">
+    <div class="raw">
+        <div class="column">
+            @Html.LabelFor(m => m.UserName)
+            <br />
+            @Html.TextBoxFor(m => m.UserName)
+            @Html.ValidationMessageFor(m => m.UserName)
+            <br /><br />
+            @Html.LabelFor(m => m.IdentificationCode)
+            <br />
+            @Html.TextBoxFor(m => m.IdentificationCode)
+            @Html.ValidationMessageFor(m => m.IdentificationCode)
+            <br /><br />
+            @Html.LabelFor(m => m.Birthday)
+            <br />
+            @Html.TextBoxFor(m => m.Birthday, new {type="date"})
+            @Html.ValidationMessageFor(m => m.Birthday)
+            <br /><br />
+            @Html.LabelFor(m => m.PhoneNumber)
+            <br />
+            @Html.TextBoxFor(m => m.PhoneNumber)
+            @Html.ValidationMessageFor(m => m.PhoneNumber)
+            <br /><br />
+            @Html.LabelFor(m => m.Workplace)
+            <br />
+            @Html.TextBoxFor(m => m.Workplace)
+            @Html.ValidationMessageFor(m => m.Workplace)
+            <br /><br />
+            @Html.LabelFor(m => m.WorkPosition)
+            <br />
+            @Html.TextBoxFor(m => m.WorkPosition)
+            @Html.ValidationMessageFor(m => m.WorkPosition)
+
+            @Html.HiddenFor(m => m.Id)
+        </div>
+    </div>
+    <div>
+        <button type="button" id="btn-save" class="search-btn subscribe btn btn-primary btn-block shadow-sm"> Save </button>
+    </div>
+</form>
+
+@section Scripts{
+    <script src="~/js/updateAlert.js"></script>
+}

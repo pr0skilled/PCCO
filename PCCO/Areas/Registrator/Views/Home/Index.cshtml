@@ -64,9 +64,9 @@
                 </tr>
             </thead>
 
-            @foreach (var item in Model.Individual)
-            {
-                <tbody>
+            <tbody>
+                @foreach (var item in Model.Individual)
+                {
                     <tr id="@item.GetHashCode()" onclick="expandRow(this.id)">
                         <td>
                             @Html.DisplayFor(modelitem => item.FirstName) @Html.DisplayFor(modelitem => item.LastName) @Html.DisplayFor(modelitem => item.MiddleName)
@@ -101,11 +101,11 @@
                         <td>@Html.DisplayFor(modelitem => item.UnitName), code: @Html.DisplayFor(modelitem => item.Code), department name: @Html.DisplayFor(modelitem => item.DepartmentName), address: @Html.DisplayFor(modelitem => item.PostalCode), @Html.DisplayFor(modelitem => item.City), @Html.DisplayFor(modelitem => item.Street), @Html.DisplayFor(modelitem => item.BuildingNumber)</td>
                         <td>
                             <a asp-action="UpsertIndividual" class="btn btn-primary mb-1" asp-route-individualId="@item.IdIndividual"><i class="bi bi-pencil-square"></i> Edit</a>
-                            <a class="btn btn-danger" onclick="deleteAlert('/Registrator/Home/Delete?pccoId={@item.IdPcco}')"><i class="bi bi-trash-fill"></i> Delete</a>
+                            <a class="btn btn-danger" onclick="deleteAlert('/Registrator/Home/Delete?pccoId=@item.IdPcco')"><i class="bi bi-trash-fill"></i> Delete</a>
                         </td>
                     </tr>
-                </tbody>
-            }
+                }
+            </tbody>
         </table>
     </div>
 }
@@ -124,9 +124,9 @@
 
                 </tr>
             </thead>
-            @foreach (var item in Model.Legal)
-            {
-                <tbody>
+            <tbody>
+                @foreach (var item in Model.Legal)
+                {
                     <tr id="@item.GetHashCode()" onclick="expandRow(this.id)">
                         <td>@Html.DisplayFor(modelitem => item.Name)</td>
                         <td>@Html.DisplayFor(modelitem => item.IdentificationCode)</td>
@@ -157,8 +157,8 @@
                             <a class="btn btn-danger" onclick="deleteAlert('/Registrator/Home/Delete?pccoId=@item.IdPcco')"><i class="bi bi-trash-fill"></i> Delete</a>
                         </td>
                     </tr>
-                </tbody>
-            }
+                }
+            </tbody>
         </table>
     </div>
 }

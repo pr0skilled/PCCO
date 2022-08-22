@@ -35,6 +35,7 @@ namespace PCCO.Web.Areas.Identity.Pages.Account
             RoleManager<IdentityRole> roleManager)
         {
             _userManager = userManager;
+
             _userStore = userStore;
             _emailStore = GetEmailStore();
             _signInManager = signInManager;
@@ -69,9 +70,19 @@ namespace PCCO.Web.Areas.Identity.Pages.Account
             public string ConfirmPassword { get; set; }
 
             [Required]
-            [StringLength(100, ErrorMessage = "The {0} must be at max {1} characters long.")]
-            [Display(Name = "Fullname")]
-            public string UserName { get; set; }
+            [StringLength(30, ErrorMessage = "The {0} must be at max {1} characters long.")]
+            [Display(Name = "First name")]
+            public string FirstName { get; set; }
+
+            [Required]
+            [StringLength(30, ErrorMessage = "The {0} must be at max {1} characters long.")]
+            [Display(Name = "Last name")]
+            public string LastName { get; set; }
+
+            [Required]
+            [StringLength(30, ErrorMessage = "The {0} must be at max {1} characters long.")]
+            [Display(Name = "Middle name")]
+            public string MiddleName { get; set; }
 
             [DisplayName("Identification code")]
             [Required(ErrorMessage = "You must enter a value for this field!")]
@@ -113,7 +124,8 @@ namespace PCCO.Web.Areas.Identity.Pages.Account
             {
                 var user = CreateUser();
 
-                await _userStore.SetUserNameAsync(user, Input.UserName, CancellationToken.None);
+                string userName = string.Join(" ", Input.LastName, Input.FirstName, Input.MiddleName);
+                await _userStore.SetUserNameAsync(user, userName, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
                 user.IdentificationCode = Input.IdentificationCode;
                 user.Workplace = Input.Workplace;
@@ -126,7 +138,7 @@ namespace PCCO.Web.Areas.Identity.Pages.Account
                 {
                     _logger.LogInformation("User created a new account with password.");
 
-                    await _userManager.AddToRoleAsync(user, UserRole.Administrator.ToString());
+                    await _userManager.AddToRoleAsync(user, "Registrator");
                     var userId = await _userManager.GetUserIdAsync(user);
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
@@ -137,17 +149,9 @@ namespace PCCO.Web.Areas.Identity.Pages.Account
                         protocol: Request.Scheme);
 
                     await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
-                        $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
-
-                    if (_userManager.Options.SignIn.RequireConfirmedAccount)
-                    {
-                        return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
-                    }
-                    else
-                    {
-                        await _signInManager.SignInAsync(user, isPersistent: false);
-                        return LocalRedirect(returnUrl);
-                    }
+                        $"Please confirm your account by <a href=\"{HtmlEncoder.Default.Encode(callbackUrl)}\">clicking here</a>.");
+                    TempData["success"] = "New User Created Successfully";
+                    return Redirect(string.Format("/Administrator/Home?lastName=&idCode={0}", user.IdentificationCode));
                 }
                 foreach (var error in result.Errors)
                 {

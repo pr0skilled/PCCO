@@ -1,11 +1,7 @@
-﻿using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI.Services;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using PCCO.Models;
 using PCCO.Models.Messages.Request.AdministratorPage;
-using PCCO.Models.ViewModels;
 using PCCO.Services.Interfaces;
 
 namespace PCCO.Controllers
@@ -37,12 +33,46 @@ namespace PCCO.Controllers
             return View(users);
         }
 
+        public IActionResult Edit(string? userId)
+        {
+            if (userId == null)
+                return View();
+            else
+            {
+                var user = _service.GetRegistratorById(userId);
+                if (user == null)
+                    return Redirect("/Error"); //change
+
+                return View(user);
+            }
+        }
+
+        [HttpPost]
+        public IActionResult Edit(ApplicationUser user)
+        {
+            if (ModelState.IsValid)
+            {
+                if (!_service.EditRegistrator(user))
+                {
+                    TempData["error"] = "Error occured while updating!";
+                    return View(user);
+                }
+                TempData["success"] = "Updated successfully";
+                string url = string.Format("/Administrator/Home?lastName=&idCode={0}", user.IdentificationCode);
+                return Redirect(url);
+            }
+
+            return View(user);
+        }
+
         public IActionResult Delete(string userId)
         {
             bool isDeleted = _service.DeleteRegistrator(userId);
             if (!isDeleted)
-                return Json(new { success = false, message = "Error while deleting!" });
-            return Json(new { success = true, message = "Deleted Successfuly!" });
+                TempData["error"] = "Error occured while deleting!";
+            else
+                TempData["success"] = "Deleted successfully";
+            return RedirectToAction("Index", new { lastName = "" });
         }
 
         public IActionResult LockUnlock(string userId)
