@@ -69,20 +69,20 @@
                 {
                     <tr id="@item.GetHashCode()" onclick="expandRow(this.id)">
                         <td>
-                            @Html.DisplayFor(modelitem => item.LastName) @Html.DisplayFor(modelitem => item.FirstName) @Html.DisplayFor(modelitem => item.MiddleName)
+                            @item.LastName) @item.FirstName) @item.MiddleName)
                         </td>
-                        <td>@Html.DisplayFor(modelitem => item.WorkPosition)</td>
-                        <td>@Html.DisplayFor(modelitem => item.Workplace)</td>
-                        <td>@Html.DisplayFor(modelitem => item.OffenceDescription)</td>
-                        <td>@Html.DisplayFor(modelitem => item.ArticleNumber)</td>
-                        <td>@Html.DisplayFor(modelitem => item.ArticleTitle)</td>
-                        <td>@Html.DisplayFor(modelitem => item.ArticleContent)</td>
-                        <td>@Html.DisplayFor(modelitem => item.CourtName)</td>
-                        <td>@Html.DisplayFor(modelitem => item.CourtCaseNumber)</td>
-                        <td>@Html.DisplayFor(modelitem => item.CourtSentenceDate)</td>
-                        <td>@Html.DisplayFor(modelitem => item.CourtSentenceNumber)</td>
-                        <td>@Html.DisplayFor(modelitem => item.CourtSentenceApplyingDate)</td>
-                        <td>@Html.DisplayFor(modelitem => item.DisciplinaryActionDetails)</td>
+                        <td>@item.WorkPosition</td>
+                        <td>@item.Workplace</td>
+                        <td>@item.OffenceDescription</td>
+                        <td>@item.ArticleNumber</td>
+                        <td>@item.ArticleTitle</td>
+                        <td>@item.ArticleContent</td>
+                        <td>@item.CourtName</td>
+                        <td>@item.CourtCaseNumber</td>
+                        <td>@item.CourtSentenceDate.Date.ToShortDateString()</td>
+                        <td>@item.CourtSentenceNumber</td>
+                        <td>@item.CourtSentenceApplyingDate.Date.ToShortDateString()</td>
+                        <td>@item.DisciplinaryActionDetails</td>
                     </tr>
                 }
             </tbody>
@@ -106,10 +106,10 @@
                 @foreach (var item in Model.Legal)
                 {
                     <tr id="@item.GetHashCode()" onclick="expandRow(this.id)">
-                        <td>@Html.DisplayFor(modelitem => item.Name)</td>
-                        <td>@Html.DisplayFor(modelitem => item.IdentificationCode)</td>
-                        <td>@Html.DisplayFor(modelitem => item.OffenceDescription)</td>
-                        <td>@Html.DisplayFor(modelitem => item.DisciplinaryActionDetails)</td>
+                        <td>@item.Name</td>
+                        <td>@item.IdentificationCode</td>
+                        <td>@item.OffenceDescription</td>
+                        <td>@item.DisciplinaryActionDetails</td>
                     </tr>
                 }
             </tbody>

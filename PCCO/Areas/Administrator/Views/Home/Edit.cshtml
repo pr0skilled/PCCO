@@ -4,43 +4,37 @@
 }
 
 <form asp-action="Edit" asp-controller="Home" asp-area="Administrator" method="post">
-    <div class="raw">
-        <div class="column">
-            @Html.LabelFor(m => m.UserName)
-            <br />
-            @Html.TextBoxFor(m => m.UserName)
-            @Html.ValidationMessageFor(m => m.UserName)
-            <br /><br />
-            @Html.LabelFor(m => m.IdentificationCode)
-            <br />
-            @Html.TextBoxFor(m => m.IdentificationCode)
-            @Html.ValidationMessageFor(m => m.IdentificationCode)
-            <br /><br />
-            @Html.LabelFor(m => m.Birthday)
-            <br />
-            @Html.TextBoxFor(m => m.Birthday, new {type="date"})
-            @Html.ValidationMessageFor(m => m.Birthday)
-            <br /><br />
-            @Html.LabelFor(m => m.PhoneNumber)
-            <br />
-            @Html.TextBoxFor(m => m.PhoneNumber)
-            @Html.ValidationMessageFor(m => m.PhoneNumber)
-            <br /><br />
-            @Html.LabelFor(m => m.Workplace)
-            <br />
-            @Html.TextBoxFor(m => m.Workplace)
-            @Html.ValidationMessageFor(m => m.Workplace)
-            <br /><br />
-            @Html.LabelFor(m => m.WorkPosition)
-            <br />
-            @Html.TextBoxFor(m => m.WorkPosition)
-            @Html.ValidationMessageFor(m => m.WorkPosition)
+    <div class="container w-25 pt-5">
+        <div class="raw">
+            <div class="col">
+                <label asp-for="UserName" class="form-label"></label>
+                <input asp-for="UserName" class="form-control" />
+                <span asp-validation-for="UserName" class="text-danger"></span>
 
-            @Html.HiddenFor(m => m.Id)
+                <label asp-for="IdentificationCode" class="form-label"></label>
+                <input asp-for="IdentificationCode" class="form-control" />
+                <span asp-validation-for="IdentificationCode" class="text-danger"></span>
+
+                <label asp-for="Birthday" class="form-label"></label>
+                <input asp-for="Birthday" type="date" class="form-control" />
+                <span asp-validation-for="Birthday" class="text-danger"></span>
+
+                <label asp-for="PhoneNumber" class="form-label"></label>
+                <input asp-for="PhoneNumber" class="form-control" />
+                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+
+                <label asp-for="Workplace" class="form-label"></label>
+                <input asp-for="Workplace" class="form-control" />
+                <span asp-validation-for="Workplace" class="text-danger"></span>
+
+                <label asp-for="WorkPosition" class="form-label"></label>
+                <input asp-for="WorkPosition" class="form-control" />
+                <span asp-validation-for="WorkPosition" class="text-danger"></span>
+
+                <input asp-for="Id" type="hidden" />
+                <button type="button" id="btn-save" class="search-btn subscribe btn btn-primary btn-block shadow-sm"> Save </button>
+            </div>
         </div>
-    </div>
-    <div>
-        <button type="button" id="btn-save" class="search-btn subscribe btn btn-primary btn-block shadow-sm"> Save </button>
     </div>
 </form>
 

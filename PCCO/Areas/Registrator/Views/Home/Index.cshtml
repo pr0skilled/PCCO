@@ -69,39 +69,41 @@
                 {
                     <tr id="@item.GetHashCode()" onclick="expandRow(this.id)">
                         <td>
-                            @Html.DisplayFor(modelitem => item.FirstName) @Html.DisplayFor(modelitem => item.LastName) @Html.DisplayFor(modelitem => item.MiddleName)
+                            @item.FirstName @item.LastName @item.MiddleName
                         </td>
-                        <td>@Html.DisplayFor(modelitem => item.IdentificationCode)</td>
-                        <td>@Html.DisplayFor(modelitem => item.WorkPosition)</td>
-                        <td>@Html.DisplayFor(modelitem => item.Workplace)</td>
-                        <td>@Html.DisplayFor(modelitem => item.Birthday)</td>
-                        <td>@Html.DisplayFor(modelitem => item.Birthplace)</td>
-                        <td>@Html.DisplayFor(modelitem => item.Residence)</td>
-                        <td>@Html.DisplayFor(modelitem => item.Series)</td>
-                        <td>@Html.DisplayFor(modelitem => item.CourtName)</td>
-                        <td>@Html.DisplayFor(modelitem => item.CourtCaseNumber)</td>
-                        <td>@Html.DisplayFor(modelitem => item.CourtSentenceDate)</td>
-                        <td>@Html.DisplayFor(modelitem => item.CourtSentenceNumber)</td>
-                        <td>@Html.DisplayFor(modelitem => item.CourtSentenceApplyingDate)</td>
-                        <td>@Html.DisplayFor(modelitem => item.CriminalRecordCancellationDate)</td>
-                        <td>@Html.DisplayFor(modelitem => item.CriminalRecordCancellationReason)</td>
-                        <td>@Html.DisplayFor(modelitem => item.CriminalActionType)</td>
-                        <td>@Html.DisplayFor(modelitem => item.CriminalActionCancellationDate)</td>
-                        <td>@Html.DisplayFor(modelitem => item.CriminalActionCancellationReason)</td>
-                        <td>@Html.DisplayFor(modelitem => item.DisciplinaryActionType)</td>
-                        <td>@Html.DisplayFor(modelitem => item.DisciplinaryActionDetails)</td>
-                        <td>@Html.DisplayFor(modelitem => item.DisciplinaryActionCancellationDate)</td>
-                        <td>@Html.DisplayFor(modelitem => item.DisciplinaryActionCancellationReason)</td>
-                        <td>@Html.DisplayFor(modelitem => item.ArticleNumber)</td>
-                        <td>@Html.DisplayFor(modelitem => item.ArticleTitle)</td>
-                        <td>@Html.DisplayFor(modelitem => item.ArticleContent)</td>
-                        <td>@Html.DisplayFor(modelitem => item.OffenceDescription)</td>
-                        <td>@Html.DisplayFor(modelitem => item.OffenceMethod)</td>
-                        <td>@Html.DisplayFor(modelitem => item.OffenceLocation)</td>
-                        <td>@Html.DisplayFor(modelitem => item.UnitName), code: @Html.DisplayFor(modelitem => item.Code), department name: @Html.DisplayFor(modelitem => item.DepartmentName), address: @Html.DisplayFor(modelitem => item.PostalCode), @Html.DisplayFor(modelitem => item.City), @Html.DisplayFor(modelitem => item.Street), @Html.DisplayFor(modelitem => item.BuildingNumber)</td>
-                        <td>
-                            <a asp-action="UpsertIndividual" class="btn btn-primary mb-1" asp-route-individualId="@item.IdIndividual"><i class="bi bi-pencil-square"></i> Edit</a>
-                            <a class="btn btn-danger" onclick="deleteAlert('/Registrator/Home/Delete?pccoId=@item.IdPcco')"><i class="bi bi-trash-fill"></i> Delete</a>
+                        <td>@item.IdentificationCode</td>
+                        <td>@item.WorkPosition</td>
+                        <td>@item.Workplace</td>
+                        <td>@item.Birthday.Value.Date.ToShortDateString()</td>
+                        <td>@item.Birthplace</td>
+                        <td>@item.Residence</td>
+                        <td>@item.Series</td>
+                        <td>@item.CourtName</td>
+                        <td>@item.CourtCaseNumber</td>
+                        <td>@item.CourtSentenceDate.Value.Date.ToShortDateString()</td>
+                        <td>@item.CourtSentenceNumber</td>
+                        <td>@item.CourtSentenceApplyingDate.Value.Date.ToShortDateString()</td>
+                        <td>@(item.CriminalRecordCancellationDate.HasValue ? item.CriminalRecordCancellationDate.Value.Date.ToShortDateString() : "")</td>
+                        <td>@item.CriminalRecordCancellationReason</td>
+                        <td>@item.CriminalActionType</td>
+                        <td>@(item.CriminalActionCancellationDate.HasValue ? item.CriminalActionCancellationDate.Value.Date.ToShortDateString() : "")</td>
+                        <td>@item.CriminalActionCancellationReason</td>
+                        <td>@item.DisciplinaryActionType</td>
+                        <td>@item.DisciplinaryActionDetails</td>
+                        <td>@(item.DisciplinaryActionCancellationDate.HasValue ? item.DisciplinaryActionCancellationDate.Value.Date.ToShortDateString() : "")</td>
+                        <td>@item.DisciplinaryActionCancellationReason</td>
+                        <td>@item.ArticleNumber</td>
+                        <td>@item.ArticleTitle</td>
+                        <td>@item.ArticleContent</td>
+                        <td>@item.OffenceDescription</td>
+                        <td>@item.OffenceMethod</td>
+                        <td>@item.OffenceLocation</td>
+                        <td>@item.UnitName, code: @item.Code, department name: @item.DepartmentName, address: @item.PostalCode, @item.City, @item.Street, @item.BuildingNumber</td>
+                        <td class="text-center">
+                            <div class="btn-group" role="group">
+                                <a asp-action="UpsertIndividual" class="btn btn-primary mb-1" asp-route-individualId="@item.IdIndividual"><i class="bi bi-pencil-square"></i> Edit</a>
+                                <a class="btn btn-danger" onclick="deleteAlert('/Registrator/Home/Delete?pccoId=@item.IdPcco')"><i class="bi bi-trash-fill"></i> Delete</a>
+                            </div>
                         </td>
                     </tr>
                 }
@@ -128,33 +130,35 @@
                 @foreach (var item in Model.Legal)
                 {
                     <tr id="@item.GetHashCode()" onclick="expandRow(this.id)">
-                        <td>@Html.DisplayFor(modelitem => item.Name)</td>
-                        <td>@Html.DisplayFor(modelitem => item.IdentificationCode)</td>
-                        <td>@Html.DisplayFor(modelitem => item.LegalForm)</td>
-                        <td>@Html.DisplayTextFor(modelitem => item.IsResident)</td>
-                        <td>@Html.DisplayFor(modelitem => item.CourtName)</td>
-                        <td>@Html.DisplayFor(modelitem => item.CourtCaseNumber)</td>
-                        <td>@Html.DisplayFor(modelitem => item.CourtSentenceDate)</td>
-                        <td>@Html.DisplayFor(modelitem => item.CourtSentenceNumber)</td>
-                        <td>@Html.DisplayFor(modelitem => item.CourtSentenceApplyingDate)</td>
-                        <td>@Html.DisplayFor(modelitem => item.CriminalRecordCancellationDate)</td>
-                        <td>@Html.DisplayFor(modelitem => item.CriminalRecordCancellationReason)</td>
-                        <td>@Html.DisplayFor(modelitem => item.CriminalActionType)</td>
-                        <td>@Html.DisplayFor(modelitem => item.CriminalActionCancellationDate)</td>
-                        <td>@Html.DisplayFor(modelitem => item.CriminalActionCancellationReason)</td>
-                        <td>@Html.DisplayFor(modelitem => item.DisciplinaryActionType)</td>
-                        <td>@Html.DisplayFor(modelitem => item.DisciplinaryActionDetails)</td>
-                        <td>@Html.DisplayFor(modelitem => item.DisciplinaryActionCancellationDate)</td>
-                        <td>@Html.DisplayFor(modelitem => item.DisciplinaryActionCancellationReason)</td>
-                        <td>@Html.DisplayFor(modelitem => item.ArticleNumber)</td>
-                        <td>@Html.DisplayFor(modelitem => item.ArticleTitle)</td>
-                        <td>@Html.DisplayFor(modelitem => item.ArticleContent)</td>
-                        <td>@Html.DisplayFor(modelitem => item.OffenceDescription)</td>
-                        <td>@Html.DisplayFor(modelitem => item.OffenceMethod)</td>
-                        <td>@Html.DisplayFor(modelitem => item.OffenceLocation)</td>
+                        <td>@item.Name</td>
+                        <td>@item.IdentificationCode</td>
+                        <td>@item.LegalForm</td>
+                        <td>@item.IsResident</td>
+                        <td>@item.CourtName</td>
+                        <td>@item.CourtCaseNumber</td>
+                        <td>@item.CourtSentenceDate.Value.Date.ToShortDateString()</td>
+                        <td>@item.CourtSentenceNumber</td>
+                        <td>@item.CourtSentenceApplyingDate.Value.Date.ToShortDateString()</td>
+                        <td>@(item.CriminalRecordCancellationDate.HasValue ? item.CriminalRecordCancellationDate.Value.Date.ToShortDateString() : "")</td>
+                        <td>@item.CriminalRecordCancellationReason</td>
+                        <td>@item.CriminalActionType</td>
+                        <td>@(item.CriminalActionCancellationDate.HasValue ? item.CriminalActionCancellationDate.Value.Date.ToShortDateString() : "")</td>
+                        <td>@item.CriminalActionCancellationReason</td>
+                        <td>@item.DisciplinaryActionType</td>
+                        <td>@item.DisciplinaryActionDetails</td>
+                        <td>@(item.DisciplinaryActionCancellationDate.HasValue ? item.DisciplinaryActionCancellationDate.Value.Date.ToShortDateString() : "")</td>
+                        <td>@item.DisciplinaryActionCancellationReason</td>
+                        <td>@item.ArticleNumber</td>
+                        <td>@item.ArticleTitle</td>
+                        <td>@item.ArticleContent</td>
+                        <td>@item.OffenceDescription</td>
+                        <td>@item.OffenceMethod</td>
+                        <td>@item.OffenceLocation</td>
                         <td class="text-center">
-                            <a asp-action="UpsertLegal" class="btn btn-primary" asp-route-legalId="@item.IdLegal"><i class="bi bi-pencil-square"></i> Edit</a>
-                            <a class="btn btn-danger" onclick="deleteAlert('/Registrator/Home/Delete?pccoId=@item.IdPcco')"><i class="bi bi-trash-fill"></i> Delete</a>
+                            <div class="btn-group" role="group">
+                                <a asp-action="UpsertLegal" class="btn btn-primary" asp-route-legalId="@item.IdLegal"><i class="bi bi-pencil-square"></i> Edit</a>
+                                <a class="btn btn-danger" onclick="deleteAlert('/Registrator/Home/Delete?pccoId=@item.IdPcco')"><i class="bi bi-trash-fill"></i> Delete</a>
+                            </div>
                         </td>
                     </tr>
                 }

@@ -29,7 +29,7 @@
                                     <input type="text" data-val-length-max="10" data-val-length-min="10" data-val-range-max="9999999999" data-val-range-min="1" id="idCode" name="idCode" class="form-control ">
                                 </div>
                                 <div>
-                                    <button type="submit" class="search-btn subscribe btn btn-primary btn-block shadow-sm"> Search </button>
+                                    <button type="submit" class="w-100 mt-3 subscribe btn btn-primary btn-block shadow-sm"> Search </button>
                                 </div>
                             </form>
                         </div>
@@ -46,51 +46,58 @@
         <table id="regTable" class="cell-border hover">
             <thead>
                 <tr>
-                    <th>@Html.Label("Fullname")</th>
-                    <th>@Html.Label("Email")</th>
-                    <th>@Html.Label("Identification code")</th>
-                    <th>@Html.Label("Workplace")</th>
-                    <th>@Html.Label("Work position")</th>
-                    <th>@Html.Label("Phone number")</th>
-                    <th>@Html.Label("Birthday")</th>
+                    <th>Fullname</th>
+                    <th>Email</th>
+                    <th>Identification code</th>
+                    <th>Workplace</th>
+                    <th>Work position</th>
+                    <th>Phone number</th>
+                    <th>Birthday</th>
                     <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
-            @foreach (var item in Model)
-            {
+                @foreach (var item in Model)
+                {
                     <tr>
-                        <td>@Html.DisplayTextFor(modelitem => item.UserName)</td>
-                        <td>@Html.DisplayFor(modelitem => item.Email)</td>
-                        <td>@Html.DisplayTextFor(modelitem => item.IdentificationCode)</td>
-                        <td>@Html.DisplayFor(modelitem => item.Workplace)</td>
-                        <td>@Html.DisplayFor(modelitem => item.WorkPosition)</td>
-                        <td>@Html.DisplayFor(modelitem => item.PhoneNumber)</td>
-                        <td>@Html.DisplayFor(modelitem => item.Birthday)</td>
-                        @Html.HiddenFor(modelitem => item.Id)
-                        <td class="text-center">
-                            @if (item.LockoutEnd == null || item.LockoutEnd < DateTime.Now)
-                            {
-                                <a asp-action="LockUnlock" asp-route-userId="@item.Id" class="btn btn-success text-white"><i class="bi bi-lock-fill"></i>&nbsp; Lock &nbsp;</a>
-                            }
-                            else
-                            {
-                                <a asp-action="LockUnlock" asp-route-userId="@item.Id" class="btn btn-warning text-white"><i class="bi bi-unlock-fill"></i>Unlock</a>
-                            }
-                            <a asp-action="Edit" class="btn btn-primary" asp-route-userId="@item.Id"><i class="bi bi-pencil-square"></i>Edit</a>
-                            <a class="btn btn-danger" onclick="deleteAlert('/Administrator/Home/Delete?userId=@item.Id')"><i class="bi bi-trash-fill"></i>Delete</a>
-                            <a asp-action="ResetPassword" class="btn btn-danger" asp-route-userId="@item.Id"><i class="bi bi-key-fill"></i>Reset password</a>
-                            @if (item.TwoFactorEnabled)
-                            {
-                                <a asp-action="Disable2FA" class="btn btn-danger" asp-route-userId="@item.Id"><i class="bi bi-qr-code-scan"></i>Disable 2FA</a>
-                            }
-                            else
-                            {
-                                <a asp-action="Disable2FA" class="btn btn-dark disabled" asp-route-userId="@item.Id"><i class="bi bi-qr-code-scan"></i>Disable 2FA</a>
-                            }
+                        <input asp-for="@item.Id" type="hidden" />
+                        <td>@item.UserName</td>
+                        <td>@item.Email</td>
+                        <td>@item.IdentificationCode</td>
+                        <td>@item.Workplace</td>
+                        <td>@item.WorkPosition</td>
+                        <td>@item.PhoneNumber</td>
+                        <td>@item.Birthday.Date.ToShortDateString()</td>
+                        <td>
+                            <div class="container">
+                                <div class="row">
+                                    @if (item.LockoutEnd == null || item.LockoutEnd < DateTime.Now)
+                                    {
+                                        <a asp-action="LockUnlock" asp-route-userId="@item.Id" class="col btn m-1 btn-success text-white"><i class="bi bi-lock-fill"></i> Lock </a>
+                                    }
+                                    else
+                                    {
+                                        <a asp-action="LockUnlock" asp-route-userId="@item.Id" class="col btn btn-warning text-white"><i class="bi bi-unlock-fill"></i> Unlock </a>
+                                    }
+                                    <a asp-action="Edit" class="col btn m-1 btn-primary" asp-route-userId="@item.Id"><i class="bi bi-pencil-square"></i> Edit</a>
+                                    <a class="col btn m-1 btn-danger" onclick="deleteAlert('/Administrator/Home/Delete?userId=@item.Id')"><i class="bi bi-trash-fill"></i> Delete </a>
+                                </div>
+                                <div class="row">
+                                    <a asp-action="ResetPassword" class="col btn m-1 btn-danger" asp-route-userId="@item.Id"><i class="bi bi-key-fill"></i> Reset password </a>
+                                    <a asp-action="ChangeEmail" class="col btn m-1 btn-danger" asp-route-userId="@item.Id"><i class="bi bi-envelope"></i> Change email </a>
+                                    @if (item.TwoFactorEnabled)
+                                    {
+                                        <a asp-action="Disable2FA" class="col btn m-1 btn-danger" asp-route-userId="@item.Id"><i class="bi bi-qr-code-scan"></i> Disable 2FA </a>
+                                    }
+                                    else
+                                    {
+                                        <a asp-action="Disable2FA" class="col btn m-1 btn-dark disabled" asp-route-userId="@item.Id"><i class="bi bi-qr-code-scan"></i> Disable 2FA </a>
+                                    }
+                                </div>
+                            </div>
                         </td>
                     </tr>
-            }
+                }
             </tbody>
         </table>
     </div>
@@ -100,7 +107,10 @@
     {
     <script>
         $(document).ready(function() {
-            $('#regTable').DataTable();
+            $('#regTable').DataTable(
+                {
+                    responsive: true
+                });
         });
     </script>
     <script src="~/js/deleteAlert.js"></script>
