@@ -1,11 +1,6 @@
-﻿@model PCCO.Models.ViewModels.EditorViewModel
+﻿@model string[]
 @{
     ViewBag.Title = "Registrator";
-    string[] indFields = new string[] { "Fullname", "Identification code", "Work position", "Workplace", "Birthday", "Birthplace", "Residence", "Series", "Court name", "Court case number", "Court sentence date", "Court sentence number", "Court sentence applying date", "Criminal record cancellation date", "Criminal record cancellation reason", "Criminal action type", "Criminal action cancellation date", "Criminal action cancellation reason", "Disciplinary action type", "Disciplinary action details", "Disciplinary action cancellation date", "Disciplinary action cancellation reason", "Article number", "Article title", "Article content", "Offence description", "Offence method", "Offence location", "Passport issuing authority" };
-    string[] legFields = new string[] { "Name", "Identification code", "Legal form", "Is resident", "Court name", "Court case number", "Court sentence date", "Court sentence number", "Court sentence applying date", "Criminal record cancellation date", "Criminal record cancellation reason", "Criminal action type", "Criminal action cancellation date", "Criminal action cancellation reason", "Disciplinary action type", "Disciplinary action details", "Disciplinary action cancellation date", "Disciplinary action cancellation reason", "Article number", "Article title", "Article content", "Offence description", "Offence method", "Offence location" };
-    string noDataStyle = "none";
-    if (ViewBag.NoData == null && Model.Individual.Count() == 0 && Model.Legal.Count() == 0)
-        noDataStyle = "";
 }
 
 <div class="container py-5">
@@ -32,13 +27,13 @@
 
                     <div class="tab-content" id="pills-tabContent" style="text-align:left">
                         <div class="tab-pane fade show active" id="pills-individual" role="tabpanel" aria-labelledby="pills-individual-tab">
-                            <form asp-action="Index" asp-controller="Home" asp-area="Registrator" method="get">
+                            <form method="get" data-ajax="true" data-ajax-method="get" data-ajax-update="#indListDiv" data-ajax-mode='replace' data-ajax-url="@Url.Action("GetIndividualsPartial","Home")">
                                 @await Html.PartialAsync("_PartialSearchInd")
                             </form>
                         </div>
 
                         <div class="tab-pane fade" id="pills-legal" role="tabpanel" aria-labelledby="pills-legal-tab">
-                            <form asp-action="Index" asp-controller="Home" asp-area="Registrator" method="get">
+                            <form method="get" data-ajax="true" data-ajax-method="get" data-ajax-update="#legListDiv" data-ajax-mode='replace' data-ajax-url="@Url.Action("GetLegalsPartial","Home")">
                                 @await Html.PartialAsync("_PartialSearchLeg")
                             </form>
                         </div>
@@ -50,128 +45,12 @@
     </div>
 </div>
 
-@if (Model.Individual.Count() != 0)
-{
-    <div id="individualItemsList" style="text-align: center;">
-        <table id="tableIndData" class="cell-border hover compact">
-            <thead>
-                <tr>
-                    @for (int i = 0; i < indFields.Length; ++i)
-                    {
-                        <th>@indFields[i]</th>
-                    }
-                    <th>Actions</th>
-                </tr>
-            </thead>
+<div id="indListDiv" style="display: none"></div>
 
-            <tbody>
-                @foreach (var item in Model.Individual)
-                {
-                    <tr id="@item.GetHashCode()" onclick="expandRow(this.id)">
-                        <td>
-                            @item.FirstName @item.LastName @item.MiddleName
-                        </td>
-                        <td>@item.IdentificationCode</td>
-                        <td>@item.WorkPosition</td>
-                        <td>@item.Workplace</td>
-                        <td>@item.Birthday.Value.Date.ToShortDateString()</td>
-                        <td>@item.Birthplace</td>
-                        <td>@item.Residence</td>
-                        <td>@item.Series</td>
-                        <td>@item.CourtName</td>
-                        <td>@item.CourtCaseNumber</td>
-                        <td>@item.CourtSentenceDate.Value.Date.ToShortDateString()</td>
-                        <td>@item.CourtSentenceNumber</td>
-                        <td>@item.CourtSentenceApplyingDate.Value.Date.ToShortDateString()</td>
-                        <td>@(item.CriminalRecordCancellationDate.HasValue ? item.CriminalRecordCancellationDate.Value.Date.ToShortDateString() : "")</td>
-                        <td>@item.CriminalRecordCancellationReason</td>
-                        <td>@item.CriminalActionType</td>
-                        <td>@(item.CriminalActionCancellationDate.HasValue ? item.CriminalActionCancellationDate.Value.Date.ToShortDateString() : "")</td>
-                        <td>@item.CriminalActionCancellationReason</td>
-                        <td>@item.DisciplinaryActionType</td>
-                        <td>@item.DisciplinaryActionDetails</td>
-                        <td>@(item.DisciplinaryActionCancellationDate.HasValue ? item.DisciplinaryActionCancellationDate.Value.Date.ToShortDateString() : "")</td>
-                        <td>@item.DisciplinaryActionCancellationReason</td>
-                        <td>@item.ArticleNumber</td>
-                        <td>@item.ArticleTitle</td>
-                        <td>@item.ArticleContent</td>
-                        <td>@item.OffenceDescription</td>
-                        <td>@item.OffenceMethod</td>
-                        <td>@item.OffenceLocation</td>
-                        <td>@item.UnitName, code: @item.Code, department name: @item.DepartmentName, address: @item.PostalCode, @item.City, @item.Street, @item.BuildingNumber</td>
-                        <td class="text-center">
-                            <div class="btn-group" role="group">
-                                <a asp-action="UpsertIndividual" class="btn btn-primary mb-1" asp-route-individualId="@item.IdIndividual"><i class="bi bi-pencil-square"></i> Edit</a>
-                                <a class="btn btn-danger" onclick="deleteAlert('/Registrator/Home/Delete?pccoId=@item.IdPcco')"><i class="bi bi-trash-fill"></i> Delete</a>
-                            </div>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    </div>
-}
-
-@if (Model.Legal.Count() != 0)
-{
-    <div id="legalItemsList" style="text-align: center;">
-        <table id="tableLegData" class="cell-border hover compact">
-            <thead>
-                <tr>
-                    @for (int i = 0; i < legFields.Length; ++i)
-                    {
-                        <th>@legFields[i]</th>
-                    }
-                    <th>Actions</th>
-
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model.Legal)
-                {
-                    <tr id="@item.GetHashCode()" onclick="expandRow(this.id)">
-                        <td>@item.Name</td>
-                        <td>@item.IdentificationCode</td>
-                        <td>@item.LegalForm</td>
-                        <td>@item.IsResident</td>
-                        <td>@item.CourtName</td>
-                        <td>@item.CourtCaseNumber</td>
-                        <td>@item.CourtSentenceDate.Value.Date.ToShortDateString()</td>
-                        <td>@item.CourtSentenceNumber</td>
-                        <td>@item.CourtSentenceApplyingDate.Value.Date.ToShortDateString()</td>
-                        <td>@(item.CriminalRecordCancellationDate.HasValue ? item.CriminalRecordCancellationDate.Value.Date.ToShortDateString() : "")</td>
-                        <td>@item.CriminalRecordCancellationReason</td>
-                        <td>@item.CriminalActionType</td>
-                        <td>@(item.CriminalActionCancellationDate.HasValue ? item.CriminalActionCancellationDate.Value.Date.ToShortDateString() : "")</td>
-                        <td>@item.CriminalActionCancellationReason</td>
-                        <td>@item.DisciplinaryActionType</td>
-                        <td>@item.DisciplinaryActionDetails</td>
-                        <td>@(item.DisciplinaryActionCancellationDate.HasValue ? item.DisciplinaryActionCancellationDate.Value.Date.ToShortDateString() : "")</td>
-                        <td>@item.DisciplinaryActionCancellationReason</td>
-                        <td>@item.ArticleNumber</td>
-                        <td>@item.ArticleTitle</td>
-                        <td>@item.ArticleContent</td>
-                        <td>@item.OffenceDescription</td>
-                        <td>@item.OffenceMethod</td>
-                        <td>@item.OffenceLocation</td>
-                        <td class="text-center">
-                            <div class="btn-group" role="group">
-                                <a asp-action="UpsertLegal" class="btn btn-primary" asp-route-legalId="@item.IdLegal"><i class="bi bi-pencil-square"></i> Edit</a>
-                                <a class="btn btn-danger" onclick="deleteAlert('/Registrator/Home/Delete?pccoId=@item.IdPcco')"><i class="bi bi-trash-fill"></i> Delete</a>
-                            </div>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    </div>
-}
-
-<div id="noData" style="display: @noDataStyle; text-align: center">
-    <h4>No results found matching your search.</h4>
-</div>
+<div id="legListDiv" style="display: none"></div>
 
 @section Scripts{
     <script src="~/js/registratorTables.js"></script>
-    <script src="~/js/deleteAlert.js"></script>
+    <script src="~/js/alerts/deleteAlert.js"></script>
+    <script src="~/js/toggleTable.js"></script>
 }

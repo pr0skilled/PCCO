@@ -83,15 +83,15 @@
                                     <a class="col btn m-1 btn-danger" onclick="deleteAlert('/Administrator/Home/Delete?userId=@item.Id')"><i class="bi bi-trash-fill"></i> Delete </a>
                                 </div>
                                 <div class="row">
-                                    <a asp-action="ResetPassword" class="col btn m-1 btn-danger" asp-route-userId="@item.Id"><i class="bi bi-key-fill"></i> Reset password </a>
+                                    <a class="col btn m-1 btn-danger" onclick="updateAlert('/Administrator/Home/ResetPassword?userId=@item.Id')"><i class="bi bi-key-fill"></i> Reset password </a>
                                     <a asp-action="ChangeEmail" class="col btn m-1 btn-danger" asp-route-userId="@item.Id"><i class="bi bi-envelope"></i> Change email </a>
                                     @if (item.TwoFactorEnabled)
                                     {
-                                        <a asp-action="Disable2FA" class="col btn m-1 btn-danger" asp-route-userId="@item.Id"><i class="bi bi-qr-code-scan"></i> Disable 2FA </a>
+                                        <a class="col btn m-1 btn-danger" onclick="updateAlert('/Administrator/Home/Reset2FA?userId=@item.Id')"><i class="bi bi-qr-code-scan"></i> Disable 2FA </a>
                                     }
                                     else
                                     {
-                                        <a asp-action="Disable2FA" class="col btn m-1 btn-dark disabled" asp-route-userId="@item.Id"><i class="bi bi-qr-code-scan"></i> Disable 2FA </a>
+                                        <a class="col btn m-1 btn-dark disabled" onclick="updateAlert('/Administrator/Home/Reset2FA?userId=@item.Id')"><i class="bi bi-qr-code-scan"></i> Disable 2FA </a>
                                     }
                                 </div>
                             </div>
@@ -113,5 +113,6 @@
                 });
         });
     </script>
-    <script src="~/js/deleteAlert.js"></script>
+    <script src="~/js/alerts/deleteAlert.js"></script>
+    <script src="~/js/alerts/updateAlert.js"></script>
 }

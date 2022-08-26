@@ -76,15 +76,17 @@ namespace PCCO.Controllers
         public async Task<IActionResult> ResetPassword(string userId)
         {
             var user = await _userManager.FindByIdAsync(userId);
-            if (user == null || !(await _userManager.IsEmailConfirmedAsync(user)))
+            if (user == null)
             {
-                // Don't reveal that the user does not exist or is not confirmed
-                TempData["error"] = "Error occured.";
-                return RedirectToAction(nameof(Index), new { lastName = "" });
+                TempData["error"] = "User not found!";
+                return RedirectToAction(nameof(Index));
+            }
+            if (!(await _userManager.IsEmailConfirmedAsync(user)))
+            {
+                TempData["error"] = "User's email is not confirmed!";
+                return RedirectToAction(nameof(Index));
             }
 
-            // For more information on how to enable account confirmation and password reset please
-            // visit https://go.microsoft.com/fwlink/?LinkID=532713
             var code = await _userManager.GeneratePasswordResetTokenAsync(user);
             code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
             var callbackUrl = Url.Page(
@@ -97,8 +99,17 @@ namespace PCCO.Controllers
                 user.Email,
                 "Reset Password",
                 $"Please reset your password by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+            TempData["success"] = "Password reset successfully.";
+            return RedirectToAction(nameof(Index));
+        }
 
-            return RedirectToAction(nameof(MockEmail), new { callbackUrl });
+        public async Task<IActionResult> Reset2FA(string userId)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            await _userManager.SetTwoFactorEnabledAsync(user, false);
+            await _userManager.ResetAuthenticatorKeyAsync(user);
+            TempData["success"] = "Authenticator app key has been reset.";
+            return RedirectToPage("./EnableAuthenticator");
         }
 
         public IActionResult MockEmail(string url)

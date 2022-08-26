@@ -41,7 +41,7 @@
             </div>
         </nav>
     </header>
-    <div class="container-fluid ps-4 pe-4">
+    <div class="container-fluid ps-4 pe-4 main-container">
         <main role="main" class="pb-3">
             <partial name="_Notification" />
             @RenderBody()
@@ -60,6 +60,7 @@
     <script src="//cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
     <script src="//cdn.datatables.net/plug-ins/1.12.1/dataRender/ellipsis.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-ajax-unobtrusive/3.2.6/jquery.unobtrusive-ajax.min.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

@@ -32,12 +32,17 @@
                 <span asp-validation-for="WorkPosition" class="text-danger"></span>
 
                 <input asp-for="Id" type="hidden" />
-                <button type="button" id="btn-save" class="search-btn subscribe btn btn-primary btn-block shadow-sm"> Save </button>
+                <div class="col text-center">
+                    <button type="button" id="btn-save" class="w-100 btn btn-primary btn-block shadow-sm"> Save </button>
+                </div>
+                <div class="col text-center">
+                    <a asp-action="Index" asp-controller="Home" asp-area="Registrator" class="btn ms-4 w-100 btn-secondary"> Back to List </a>
+                </div>
             </div>
         </div>
     </div>
 </form>
 
 @section Scripts{
-    <script src="~/js/updateAlert.js"></script>
+    <script src="~/js/alerts/updateAlert.js"></script>
 }

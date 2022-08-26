@@ -16,33 +16,32 @@ namespace PCCO.Areas.User.Controllers
             _service = service;
         }
 
-        public IActionResult Index(string isIndividual, string lastName, string firstName, string middleName, string? articleNumber, string courtSentenceNumber, string name, string identificationCode)
+        public IActionResult Index()
         {
-            UserViewModel view = new(_service.GetArticles());
-            if (isIndividual == "true")
-            {
-                GetIndividualRequest request = new()
-                {
-                    LastName = lastName,
-                    MiddleName = middleName,
-                    FirstName = firstName,
-                    ArticleNumber = articleNumber,
-                    CourtSentenceNumber = courtSentenceNumber,
-                    IsIndividual = true
-                };
-                UserGetIndividualResponse pccos = _service.GetIndividuals(request);
-                view.Individual = pccos.Data;
-            }
-            else if (isIndividual == "false")
-            {
-                GetLegalRequest request = new() { IdentificationCode = identificationCode, Name = name };
-                UserGetLegalResponse pccos = _service.GetLegals(request);
-                view.Legal = pccos.Data;
-            }
-            else
-                ViewBag.NoData = "true";
+            string[] articles = _service.GetArticles();
+            return View(articles);
+        }
 
-            return View(view);
+        public IActionResult GetIndividualsPartial(string lastName, string firstName, string middleName, string articleNumber, string courtSentenceNumber)
+        {
+            GetIndividualRequest request = new()
+            {
+                LastName = lastName,
+                MiddleName = middleName,
+                FirstName = firstName,
+                ArticleNumber = articleNumber,
+                CourtSentenceNumber = courtSentenceNumber,
+                IsIndividual = true
+            };
+            UserGetIndividualResponse pccos = _service.GetIndividuals(request);
+            return PartialView("_PartialUserIndData", pccos.Data);
+        }
+
+        public IActionResult GetLegalsPartial(string name, string identificationCode)
+        {
+            GetLegalRequest request = new() { IdentificationCode = identificationCode, Name = name };
+            UserGetLegalResponse pccos = _service.GetLegals(request);
+            return PartialView("_PartialUserLegData", pccos.Data);
         }
 
         public IActionResult Error()

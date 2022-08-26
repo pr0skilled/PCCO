@@ -12,13 +12,19 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<PCCOContext>(options => options.UseSqlServer(
     builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.Configure<StripeSettings>(builder.Configuration.GetSection("Stripe"));
-builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = false) //change on deploy
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true) //change on deploy
     .AddDefaultTokenProviders()
     .AddEntityFrameworkStores<PCCOContext>()
     .AddDefaultUI();
 builder.Services.Configure<IdentityOptions>(opts =>
 {
     opts.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ ";
+});
+
+builder.Services.AddAuthentication().AddGoogle(googleOptions =>
+{
+    googleOptions.ClientId = builder.Configuration["Authentication:Google:ClientId"];
+    googleOptions.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
 });
 
 builder.Services.AddRazorPages().AddRazorRuntimeCompilation();

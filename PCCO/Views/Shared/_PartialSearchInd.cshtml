@@ -20,7 +20,7 @@
     <label for="articleNumber">
         <h6>Article number</h6>
     </label>
-    @Html.DropDownList("articleNumber", new SelectList(Model.Articles), "Номер статті", new { @class = "form-control" })
+    @Html.DropDownList("articleNumber", new SelectList(Model), "Номер статті", new { @class = "form-control" })
 </div>
 <div class="form-group">
     <label for="courtSentenceNumber">
@@ -32,5 +32,5 @@
     <input type="hidden" id="IsIndividual" name="IsIndividual" class="form-control " value="true">
 </div>
 <div>
-    <button type="submit" class="w-100 mt-3 subscribe btn btn-primary btn-block shadow-sm"> Search </button>
+    <button type="submit" id="searchIndBtn" class="w-100 mt-3 subscribe btn btn-primary btn-block shadow-sm"> Search </button>
 </div>

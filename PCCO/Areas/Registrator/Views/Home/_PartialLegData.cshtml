@@ -1,0 +1,67 @@
+﻿@model List<Models.ViewModels.EditorLegalViewModel>
+@{
+    string[] legFields = new string[] { "Name", "Identification code", "Legal form", "Is resident", "Court name", "Court case number", "Court sentence date", "Court sentence number", "Court sentence applying date", "Criminal record cancellation date", "Criminal record cancellation reason", "Criminal action type", "Criminal action cancellation date", "Criminal action cancellation reason", "Disciplinary action type", "Disciplinary action details", "Disciplinary action cancellation date", "Disciplinary action cancellation reason", "Article number", "Article title", "Article content", "Offence description", "Offence method", "Offence location" };
+}
+
+@if (Model.Count() > 0)
+{
+    <div id="legalItemsList" style="text-align: center;">
+        <table id="tableLegData" class="cell-border hover compact">
+            <thead>
+                <tr>
+                    @for (int i = 0; i < legFields.Length; ++i)
+                    {
+                        <th>@legFields[i]</th>
+                    }
+                    <th>Actions</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr id="@item.GetHashCode()" onclick="expandRow(this.id)">
+                        <td>@item.Name</td>
+                        <td>@item.IdentificationCode</td>
+                        <td>@item.LegalForm</td>
+                        <td>@item.IsResident</td>
+                        <td>@item.CourtName</td>
+                        <td>@item.CourtCaseNumber</td>
+                        <td>@item.CourtSentenceDate.Value.Date.ToShortDateString()</td>
+                        <td>@item.CourtSentenceNumber</td>
+                        <td>@item.CourtSentenceApplyingDate.Value.Date.ToShortDateString()</td>
+                        <td>@(item.CriminalRecordCancellationDate.HasValue ? item.CriminalRecordCancellationDate.Value.Date.ToShortDateString() : "")</td>
+                        <td>@item.CriminalRecordCancellationReason</td>
+                        <td>@item.CriminalActionType</td>
+                        <td>@(item.CriminalActionCancellationDate.HasValue ? item.CriminalActionCancellationDate.Value.Date.ToShortDateString() : "")</td>
+                        <td>@item.CriminalActionCancellationReason</td>
+                        <td>@item.DisciplinaryActionType</td>
+                        <td>@item.DisciplinaryActionDetails</td>
+                        <td>@(item.DisciplinaryActionCancellationDate.HasValue ? item.DisciplinaryActionCancellationDate.Value.Date.ToShortDateString() : "")</td>
+                        <td>@item.DisciplinaryActionCancellationReason</td>
+                        <td>@item.ArticleNumber</td>
+                        <td>@item.ArticleTitle</td>
+                        <td>@item.ArticleContent</td>
+                        <td>@item.OffenceDescription</td>
+                        <td>@item.OffenceMethod</td>
+                        <td>@item.OffenceLocation</td>
+                        <td class="text-center">
+                            <div class="btn-group" role="group">
+                                <a asp-action="UpsertLegal" class="btn btn-primary" asp-route-legalId="@item.IdLegal"><i class="bi bi-pencil-square"></i> Edit</a>
+                                <a class="btn btn-danger" onclick="deleteAlert('/Registrator/Home/Delete?pccoId=@item.IdPcco')"><i class="bi bi-trash-fill"></i> Delete</a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+else
+{
+    <div style="text-align: center">
+        <h4>No results found matching your search.</h4>
+    </div>
+}
+
+<script src="~/js/datatables/registratorLegTable.js"></script>

@@ -1,9 +1,6 @@
-﻿@model PCCO.Models.ViewModels.UserViewModel
+﻿@model string[]
 @{
     ViewBag.Title = "Index";
-    string noDataStyle = "none";
-    if (ViewBag.NoData == null && Model.Individual.Count() == 0 && Model.Legal.Count() == 0)
-        noDataStyle = "";
 }
 
 <div class="container py-5">
@@ -24,13 +21,13 @@
 
                     <div class="tab-content" id="pills-tabContent" style="text-align:left">
                         <div class="tab-pane fade show active" id="pills-individual" role="tabpanel" aria-labelledby="pills-individual-tab">
-                            <form asp-action="Index" asp-controller="Home" asp-area="User" method="get">
+                            <form method="get" data-ajax="true" data-ajax-method="get" data-ajax-update="#indListDiv" data-ajax-mode='replace' data-ajax-url="@Url.Action("GetIndividualsPartial","Home")">
                                 @await Html.PartialAsync("_PartialSearchInd")
                             </form>
                         </div>
 
                         <div class="tab-pane fade" id="pills-legal" role="tabpanel" aria-labelledby="pills-legal-tab">
-                            <form asp-action="Index" asp-controller="Home" asp-area="User" method="get">
+                            <form method="get" data-ajax="true" data-ajax-method="get" data-ajax-update="#legListDiv" data-ajax-mode='replace' data-ajax-url="@Url.Action("GetLegalsPartial","Home")">
                                 @await Html.PartialAsync("_PartialSearchLeg")
                             </form>
                         </div>
@@ -42,85 +39,10 @@
     </div>
 </div>
 
-@if (Model.Individual.Count() != 0)
-{
-    <div id="individualItemsList">
-        <table id="tableUserIndData" style="text-align: center;" class="cell-border hover">
-            <thead>
-                <tr>
-                    <th>Fullname</th>
-                    <th>Work position</th>
-                    <th>Workplace</th>
-                    <th>Offence description</th>
-                    <th>Article number</th>
-                    <th>Article title</th>
-                    <th>Article content</th>
-                    <th>Court name</th>
-                    <th>Court case number</th>
-                    <th>Court sentence date</th>
-                    <th>Court sentence number</th>
-                    <th>Court sentence applying date</th>
-                    <th>Disciplinary action details</th>
-                </tr>
-            </thead>
+<div id="indListDiv" style="display: none"></div>
 
-            <tbody>
-                @foreach (var item in Model.Individual)
-                {
-                    <tr id="@item.GetHashCode()" onclick="expandRow(this.id)">
-                        <td>
-                            @item.LastName) @item.FirstName) @item.MiddleName)
-                        </td>
-                        <td>@item.WorkPosition</td>
-                        <td>@item.Workplace</td>
-                        <td>@item.OffenceDescription</td>
-                        <td>@item.ArticleNumber</td>
-                        <td>@item.ArticleTitle</td>
-                        <td>@item.ArticleContent</td>
-                        <td>@item.CourtName</td>
-                        <td>@item.CourtCaseNumber</td>
-                        <td>@item.CourtSentenceDate.Date.ToShortDateString()</td>
-                        <td>@item.CourtSentenceNumber</td>
-                        <td>@item.CourtSentenceApplyingDate.Date.ToShortDateString()</td>
-                        <td>@item.DisciplinaryActionDetails</td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    </div>
-}
-
-@if (Model.Legal.Count() != 0)
-{
-    <div id="legalItemsList" style="text-align: center;">
-        <table id="tableUserLegData" class="cell-border hover">
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Identification code</th>
-                    <th>Offence description</th>
-                    <th>Disciplinary action details</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model.Legal)
-                {
-                    <tr id="@item.GetHashCode()" onclick="expandRow(this.id)">
-                        <td>@item.Name</td>
-                        <td>@item.IdentificationCode</td>
-                        <td>@item.OffenceDescription</td>
-                        <td>@item.DisciplinaryActionDetails</td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    </div>
-}
-
-<div id="noData" style="display: @noDataStyle; text-align: center">
-    <h4>No results found matching your search.</h4>
-</div>
+<div id="legListDiv" style="display: none"></div>
 
 @section Scripts{
-    <script src="~/js/userTables.js"></script>
+    <script src="~/js/toggleTable.js"></script>
 }

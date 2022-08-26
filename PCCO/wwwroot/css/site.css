@@ -9,6 +9,10 @@ body {
     min-height: 100%;
 }
 
+.main-container {
+    min-height: calc(100% - 73px);
+}
+
 .qwe123 {
     margin-left: unset !important;
     margin-right: unset !important;

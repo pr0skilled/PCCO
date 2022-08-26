@@ -129,14 +129,18 @@ namespace PCCO.Web.Areas.Identity.Pages.Account
                     _logger.LogWarning("User account locked out.");
                     return RedirectToPage("./Lockout");
                 }
+                if (result.IsNotAllowed)
+                {
+                    ModelState.AddModelError(string.Empty, "Email wasn't confirmed.");
+                    return Page();
+                }
                 else
                 {
-                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                    ModelState.AddModelError(string.Empty, "Wrong password.");
                     return Page();
                 }
             }
-
-            // If we got this far, something failed, redisplay form
+            TempData["error"] = "Server error";
             return Page();
         }
     }

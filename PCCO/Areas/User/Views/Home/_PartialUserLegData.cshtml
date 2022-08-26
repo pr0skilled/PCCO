@@ -1,0 +1,36 @@
+﻿@model List<PCCO.Models.ViewModels.UserLegalViewModel>
+
+@if (Model.Count() > 0)
+{
+    <div id="legalItemsList" style="text-align: center;">
+        <table id="tableUserLegData" class="cell-border hover">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Identification code</th>
+                    <th>Offence description</th>
+                    <th>Disciplinary action details</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr id="@item.GetHashCode()" onclick="expandRow(this.id)">
+                        <td>@item.Name</td>
+                        <td>@item.IdentificationCode</td>
+                        <td>@item.OffenceDescription</td>
+                        <td>@item.DisciplinaryActionDetails</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+else
+{
+    <div style="text-align: center">
+        <h4>No results found matching your search.</h4>
+    </div>
+}
+
+<script src="~/js/datatables/userLegalTable.js"></script>

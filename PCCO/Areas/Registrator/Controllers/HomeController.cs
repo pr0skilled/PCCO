@@ -19,33 +19,32 @@ namespace PCCO.Areas.Registrator.Controllers
             _service = service;
         }
 
-        public IActionResult Index(string IsIndividual, string lastName, string firstName, string middleName, string? articleNumber, string courtSentenceNumber, string name, string identificationCode)
+        public IActionResult Index()
         {
-            EditorViewModel view = new(_service.GetArticles());
-            if (IsIndividual == "true")
-            {
-                GetIndividualRequest request = new()
-                {
-                    LastName = lastName,
-                    MiddleName = middleName,
-                    FirstName = firstName,
-                    ArticleNumber = articleNumber,
-                    CourtSentenceNumber = courtSentenceNumber,
-                    IsIndividual = true
-                };
-                RegistratorGetIndividualResponse pccos = _service.GetIndividuals(request);
-                view.Individual = pccos.Data;
-            }
-            else if (IsIndividual == "false")
-            {
-                GetLegalRequest request = new() { IdentificationCode = identificationCode, Name = name };
-                RegistratorGetLegalResponse pccos = _service.GetLegals(request);
-                view.Legal = pccos.Data;
-            }
-            else
-                ViewBag.NoData = "true";
+            string[] articles = _service.GetArticles();
+            return View(articles);
+        }
 
-            return View(view);
+        public IActionResult GetIndividualsPartial(string lastName, string firstName, string middleName, string articleNumber, string courtSentenceNumber)
+        {
+            GetIndividualRequest request = new()
+            {
+                LastName = lastName,
+                MiddleName = middleName,
+                FirstName = firstName,
+                ArticleNumber = articleNumber,
+                CourtSentenceNumber = courtSentenceNumber,
+                IsIndividual = true
+            };
+            RegistratorGetIndividualResponse pccos = _service.GetIndividuals(request);
+            return PartialView("_PartialIndData", pccos.Data);
+        }
+
+        public IActionResult GetLegalsPartial(string name, string identificationCode)
+        {
+            GetLegalRequest request = new() { IdentificationCode = identificationCode, Name = name };
+            RegistratorGetLegalResponse pccos = _service.GetLegals(request);
+            return PartialView("_PartialLegData", pccos.Data);
         }
 
         public IActionResult UpsertIndividual(int? individualId)
