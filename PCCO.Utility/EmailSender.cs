@@ -1,40 +1,39 @@
-﻿/*namespace BulkyBook.Utility
+﻿using Mailjet.Client;
+using Mailjet.Client.Resources;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using Microsoft.Extensions.Configuration;
+using Mailjet.Client.TransactionalEmails;
+
+namespace PCCO.Utility
 {
     public class EmailSender : IEmailSender
     {
-        public string SendGridSecret { get; set; }
-
-        public EmailSender(IConfiguration _config)
+        private readonly IConfiguration _configuration;
+        public MailJetOptions _mailJetOptions;
+        public EmailSender(IConfiguration configuration)
         {
-            SendGridSecret = _config.GetValue<string>("SendGrid:SecretKey");
+            _configuration = configuration;
         }
 
-        public Task SendEmailAsync(string email, string subject, string htmlMessage)
+        public async Task SendEmailAsync(string email, string subject, string htmlMessage)
         {
-            //var emailToSend = new MimeMessage();
-            //emailToSend.From.Add(MailboxAddress.Parse(""));
-            //emailToSend.To.Add(MailboxAddress.Parse(email));
-            //emailToSend.Subject = subject;
-            //emailToSend.Body = new TextPart(MimeKit.Text.TextFormat.Html){ Text = htmlMessage};
+            _mailJetOptions.ApiKey = _configuration["MailJet:ApiKey"];
+            _mailJetOptions.SecretKey = _configuration["MailJet:SecretKey"];
 
-            ////send email
-            //using (var emailClient = new SmtpClient())
-            //{
-            //    emailClient.Connect("smtp.gmail.com", 587, MailKit.Security.SecureSocketOptions.StartTls);
-            //    emailClient.Authenticate("", "");
-            //    emailClient.Send(emailToSend);
-            //    emailClient.Disconnect(true);
-            //}
+            MailjetClient client = new MailjetClient(_mailJetOptions.ApiKey, _mailJetOptions.SecretKey);
+            MailjetRequest request = new MailjetRequest
+            {
+                Resource = Send.Resource
+            };
 
-            //return Task.CompletedTask;
+            var transactionalEmail = new TransactionalEmailBuilder()
+                .WithFrom(new SendContact("pr0skilled@proton.me"))
+                .WithSubject(subject)
+                .WithHtmlPart(htmlMessage)
+                .WithTo(new SendContact(email))
+                .Build();
 
-            var client = new SendGridClient(SendGridSecret);
-            var from = new EmailAddress("", "Bulky Book");
-            var to = new EmailAddress(email);
-            var msg = MailHelper.CreateSingleEmail(from, to, subject,"", htmlMessage);
-            return client.SendEmailAsync(msg);
-
+            await client.SendTransactionalEmailAsync(transactionalEmail);
         }
     }
 }
-*/

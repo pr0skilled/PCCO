@@ -2,7 +2,6 @@
 using PCCO.DataAccess.Repositories.Interfaces;
 using PCCO.Models.Messages.Request.UserPage;
 using PCCO.Models.Messages.Response.UserPage;
-using PCCO.Models.ViewModels;
 using PCCO.Services.Interfaces;
 
 namespace PCCO.Services.Implementations

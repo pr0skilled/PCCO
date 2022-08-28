@@ -65,7 +65,7 @@ namespace PCCO.Web.Areas.Identity.Pages.Account.Manage
 
             HasAuthenticator = await _userManager.GetAuthenticatorKeyAsync(user) != null;
             Is2faEnabled = await _userManager.GetTwoFactorEnabledAsync(user);
-            IsMachineRemembered = await _signInManager.IsTwoFactorClientRememberedAsync(user);
+            //IsMachineRemembered = await _signInManager.IsTwoFactorClientRememberedAsync(user); //causes error ????????????????????
             RecoveryCodesLeft = await _userManager.CountRecoveryCodesAsync(user);
 
             return Page();

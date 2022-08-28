@@ -45,10 +45,16 @@
                         <td>@item.OffenceDescription</td>
                         <td>@item.OffenceMethod</td>
                         <td>@item.OffenceLocation</td>
-                        <td class="text-center">
-                            <div class="btn-group" role="group">
-                                <a asp-action="UpsertLegal" class="btn btn-primary" asp-route-legalId="@item.IdLegal"><i class="bi bi-pencil-square"></i> Edit</a>
-                                <a class="btn btn-danger" onclick="deleteAlert('/Registrator/Home/Delete?pccoId=@item.IdPcco')"><i class="bi bi-trash-fill"></i> Delete</a>
+                        <td>
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col">
+                                        <a asp-action="UpsertLegal" class="btn btn-primary" asp-route-legalId="@item.IdLegal"><i class="bi bi-pencil-square"></i> Edit</a>
+                                    </div>
+                                    <div class="col">
+                                        <a class="btn btn-danger mt-1" onclick="deleteAlert('/Registrator/Home/Delete?pccoId=@item.IdPcco', 'tableLegData')"><i class="bi bi-trash-fill"></i> Delete</a>
+                                    </div>
+                                </div>
                             </div>
                         </td>
                     </tr>

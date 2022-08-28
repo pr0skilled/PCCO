@@ -1,6 +1,5 @@
 ﻿$(document).ready(function () {
     var e = document.getElementById('searchIndBtn');
-    console.log(e);
     e.addEventListener("click", () => {
         var individual = document.getElementById("indListDiv");
         var legal = document.getElementById("legListDiv");
@@ -11,7 +10,6 @@
 
 $(document).ready(function () {
     var e = document.getElementById('searchLegBtn');
-    console.log(e);
     e.addEventListener("click", () => {
         var individual = document.getElementById("indListDiv");
         var legal = document.getElementById("legListDiv");

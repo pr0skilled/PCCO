@@ -19,5 +19,46 @@ namespace PCCO.DataAccess
         public virtual DbSet<Pcco> Pccos { get; set; }
         public virtual DbSet<Punishment> Punishments { get; set; }
         public virtual DbSet<ApplicationUser> ApplicationUsers { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
+
+            builder.Entity<CorruptionRecord>(entity =>
+            {
+                entity.HasIndex(e => e.CourtCaseNumber)
+                    .IsUnique();
+
+                entity.HasIndex(e => e.CourtSentenceNumber)
+                    .IsUnique();
+            });
+
+            builder.Entity<CriminalArticle>(entity =>
+            {
+                entity.HasIndex(e => e.ArticleNumber)
+                    .IsUnique();
+            });
+
+            builder.Entity<IndividualData>(entity =>
+            {
+                entity.HasIndex(e => e.Series)
+                    .IsUnique();
+
+                entity.HasIndex(e => e.IdentificationCode)
+                    .IsUnique();
+            });
+
+            builder.Entity<IssuingAuthority>(entity =>
+            {
+                entity.HasIndex(e => e.Code)
+                    .IsUnique();
+            });
+
+            builder.Entity<LegalEntityData>(entity =>
+            {
+                entity.HasIndex(e => e.IdentificationCode)
+                    .IsUnique();
+            });
+        }
     }
 }

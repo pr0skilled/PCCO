@@ -137,7 +137,7 @@ namespace PCCO.Services.Implementations
             DeletePccoResponse response = new DeletePccoResponse();
             try
             {
-                var entity = _unitOfWork.PccoRepository.GetById(request.Id);
+                var entity = _unitOfWork.PccoRepository.GetById(request.PccoId);
                 _unitOfWork.PccoRepository.Delete(entity);
                 _unitOfWork.Save();
                 response.IsDeleted = true;

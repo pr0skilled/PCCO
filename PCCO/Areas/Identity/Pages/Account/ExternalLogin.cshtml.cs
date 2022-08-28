@@ -117,7 +117,7 @@ namespace PCCO.Web.Areas.Identity.Pages.Account
             }
             else
             {
-                ErrorMessage = "You cannot sign in via external servise without existing account. To add external sing in, log in using your credentials and add servise at your accont page.";
+                ErrorMessage = "You cannot sign in via external servise without existing local account. To add external sing in, log in using your credentials and add servise at your accont page.";
             }
             return RedirectToPage("./Login", new { ReturnUrl = returnUrl });
 

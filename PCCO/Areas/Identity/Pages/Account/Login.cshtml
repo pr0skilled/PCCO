@@ -4,6 +4,7 @@
 @{
     ViewData["Title"] = "Log in";
     var googleProvider = Model.ExternalLogins.Where(x => x.Name == "Google").FirstOrDefault();
+    var facebookProvider = Model.ExternalLogins.Where(x => x.Name == "Facebook").FirstOrDefault();
 }
 
 <div class="row d-flex justify-content-center">
@@ -16,7 +17,17 @@
                         <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
                             <div>
                                 <p>
-                                    <button type="submit" class="btn btn-block w-100 btn-outline-info" name="provider" value="@googleProvider.Name"> <img src="https://img.icons8.com/color/16/000000/google-logo.png">Log in via Google</button>
+                                    <button type="submit" class="btn btn-block w-100 btn-outline-info" name="provider" value="@googleProvider.Name"> <img src="~/img/google-logo.png" style="width: 24px; height: 24px;">&nbsp; Log in via Google</button>
+                                </p>
+                            </div>
+                        </form>
+                    }
+                    @if (facebookProvider != null)
+                    {
+                        <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
+                            <div>
+                                <p>
+                                    <button type="submit" class="btn btn-block w-100 btn-outline-info" name="provider" value="@facebookProvider.Name"><img src="~/img/facebook-logo.png" style="width: 24px; height: 24px;">&nbsp; Log in via Facebook</button>
                                 </p>
                             </div>
                         </form>

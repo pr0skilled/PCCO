@@ -2,7 +2,7 @@
 {
     public class DeletePccoRequest
     {
-        public int Id { get; set; }
+        public int PccoId { get; set; }
         public bool IsIndividual { get; set; }
     }
 }

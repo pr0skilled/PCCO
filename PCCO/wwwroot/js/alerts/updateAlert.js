@@ -32,7 +32,11 @@ function updateAlert(url) {
     }).then((result) => {
         if (result.isConfirmed) {
             $.ajax({
-                url: url
+                url: url,
+                success: function () {
+                    localStorage.setItem('success', 'Success!')
+                    window.location.reload();
+                }
             });
         }
     });

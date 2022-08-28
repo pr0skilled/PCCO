@@ -5,7 +5,6 @@
         public IndividualData()
         {
             Pccos = new HashSet<Pcco>();
-            Users = new HashSet<ApplicationUser>();
         }
 
         public int Id { get; set; }
@@ -23,6 +22,5 @@
 
         public virtual IssuingAuthority IssuingAuthority { get; set; }
         public virtual ICollection<Pcco> Pccos { get; set; }
-        public virtual ICollection<ApplicationUser> Users { get; set; }
     }
 }

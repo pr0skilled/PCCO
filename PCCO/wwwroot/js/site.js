@@ -29,3 +29,14 @@ function expandRow(id) {
         }
     }
 }
+
+$(document).ready(function () {
+    if (localStorage.getItem('success') !== null) {
+        toastr.success(localStorage.getItem('success'));
+        localStorage.clear();
+    }
+    if (localStorage.getItem('error') !== null) {
+        toastr.error(localStorage.getItem('error'));
+        localStorage.clear();
+    }
+});

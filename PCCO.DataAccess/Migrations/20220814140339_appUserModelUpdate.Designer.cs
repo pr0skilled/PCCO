@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PCCO.DataAccess;
 
@@ -11,9 +12,10 @@ using PCCO.DataAccess;
 namespace PCCO.DataAccess.Migrations
 {
     [DbContext(typeof(PCCOContext))]
-    partial class PCCOContextModelSnapshot : ModelSnapshot
+    [Migration("20220814140339_appUserModelUpdate")]
+    partial class appUserModelUpdate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -279,7 +281,7 @@ namespace PCCO.DataAccess.Migrations
 
                     b.HasIndex("PunishmentId");
 
-                    b.ToTable("CorruptionRecords", (string)null);
+                    b.ToTable("CorruptionRecords");
                 });
 
             modelBuilder.Entity("PCCO.Models.CrimeInfo", b =>
@@ -304,7 +306,7 @@ namespace PCCO.DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("CrimeInfos", (string)null);
+                    b.ToTable("CrimeInfos");
                 });
 
             modelBuilder.Entity("PCCO.Models.CriminalArticle", b =>
@@ -332,7 +334,7 @@ namespace PCCO.DataAccess.Migrations
                     b.HasIndex("ArticleNumber")
                         .IsUnique();
 
-                    b.ToTable("CriminalArticles", (string)null);
+                    b.ToTable("CriminalArticles");
                 });
 
             modelBuilder.Entity("PCCO.Models.IndividualData", b =>
@@ -395,7 +397,7 @@ namespace PCCO.DataAccess.Migrations
                     b.HasIndex("Series")
                         .IsUnique();
 
-                    b.ToTable("IndividualData", (string)null);
+                    b.ToTable("IndividualData");
                 });
 
             modelBuilder.Entity("PCCO.Models.IssuingAuthority", b =>
@@ -438,7 +440,7 @@ namespace PCCO.DataAccess.Migrations
                     b.HasIndex("Code")
                         .IsUnique();
 
-                    b.ToTable("IssuingAuthorities", (string)null);
+                    b.ToTable("IssuingAuthorities");
                 });
 
             modelBuilder.Entity("PCCO.Models.LegalEntityData", b =>
@@ -469,7 +471,7 @@ namespace PCCO.DataAccess.Migrations
                     b.HasIndex("IdentificationCode")
                         .IsUnique();
 
-                    b.ToTable("LegalEntityData", (string)null);
+                    b.ToTable("LegalEntityData");
                 });
 
             modelBuilder.Entity("PCCO.Models.Pcco", b =>
@@ -500,7 +502,7 @@ namespace PCCO.DataAccess.Migrations
 
                     b.HasIndex("LegalEntityDataId");
 
-                    b.ToTable("Pccos", (string)null);
+                    b.ToTable("Pccos");
                 });
 
             modelBuilder.Entity("PCCO.Models.Punishment", b =>
@@ -542,7 +544,7 @@ namespace PCCO.DataAccess.Migrations
 
                     b.HasIndex("CriminalArticleId");
 
-                    b.ToTable("Punishments", (string)null);
+                    b.ToTable("Punishments");
                 });
 
             modelBuilder.Entity("PCCO.Models.ApplicationUser", b =>

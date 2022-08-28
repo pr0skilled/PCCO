@@ -3,6 +3,7 @@
 #nullable disable
 
 using System.ComponentModel.DataAnnotations;
+using System.Drawing;
 using System.Globalization;
 using System.Text;
 using System.Text.Encodings.Web;
@@ -10,6 +11,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using PCCO.Models;
+using QRCoder;
 
 namespace PCCO.Web.Areas.Identity.Pages.Account.Manage
 {
@@ -41,7 +43,7 @@ namespace PCCO.Web.Areas.Identity.Pages.Account.Manage
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
         ///     directly from your code. This API may change or be removed in future releases.
         /// </summary>
-        public string AuthenticatorUri { get; set; }
+        public byte[] QRCodeBytes { get; set; }
 
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
@@ -152,7 +154,7 @@ namespace PCCO.Web.Areas.Identity.Pages.Account.Manage
             SharedKey = FormatKey(unformattedKey);
 
             var email = await _userManager.GetEmailAsync(user);
-            AuthenticatorUri = GenerateQrCodeUri(email, unformattedKey);
+            QRCodeBytes = GenerateQRCodeBytes($"PCCO ({email})", unformattedKey, email);
         }
 
         private string FormatKey(string unformattedKey)
@@ -172,14 +174,23 @@ namespace PCCO.Web.Areas.Identity.Pages.Account.Manage
             return result.ToString().ToLowerInvariant();
         }
 
-        private string GenerateQrCodeUri(string email, string unformattedKey)
+        private byte[] GenerateQRCodeBytes(string provider, string key, string userEmail)
         {
-            return string.Format(
-                CultureInfo.InvariantCulture,
-                AuthenticatorUriFormat,
-                _urlEncoder.Encode("Microsoft.AspNetCore.Identity.UI"),
-                _urlEncoder.Encode(email),
-                unformattedKey);
+            var qrCodeGenerater = new QRCodeGenerator();
+            var qrCodeData = qrCodeGenerater.CreateQrCode(
+                $"otpauth://totp/{provider}:{userEmail}?secret={key}&issuer={provider}",
+                QRCodeGenerator.ECCLevel.Q);
+            var qrCode = new QRCode(qrCodeData);
+            var qrCodeImage = qrCode.GetGraphic(20);
+
+            return BitmapToByteArray(qrCodeImage);
+        }
+
+        private byte[] BitmapToByteArray(Bitmap image)
+        {
+            using MemoryStream stream = new MemoryStream();
+            image.Save(stream, System.Drawing.Imaging.ImageFormat.Png);
+            return stream.ToArray();
         }
     }
 }

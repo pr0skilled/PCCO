@@ -32,13 +32,27 @@ namespace PCCO.Controllers
             _emailSender = emailSender;
         }
 
-        public IActionResult Index(string lastName, string idCode)
+        public IActionResult Index()
+        {
+            return View();
+        }
+
+        public async Task<IActionResult> GetUsersPartial(string lastName, string idCode)
         {
             GetRegistratorRequest request = new() { IdentificationCode = idCode, LastName = lastName };
-            List<ApplicationUser>? users = _service.GetRegistrators(request);
-            if (users == null)
-                users = new();
-            return View(users);
+            var users = _service.GetRegistrators(request);
+            foreach (var user in users)
+            {
+                IList<string> roles = await _userManager.GetRolesAsync(user);
+                user.Role = roles.ToList();
+            }
+            if (!(User.HasClaim("CreateAdministrators", "True") && User.IsInRole("Administrator")))
+            {
+                users.RemoveAll(x => x.Role.Contains("Administrator"));
+            }
+            users.RemoveAll(x => x.UserName == User.Identity.Name);
+
+            return PartialView("_PartialUsersData", users);
         }
 
         public IActionResult Edit(string? userId)
@@ -49,7 +63,7 @@ namespace PCCO.Controllers
             {
                 var user = _service.GetRegistratorById(userId);
                 if (user == null)
-                    return Redirect("/Error"); //change
+                    TempData["error"] = "User wasn't found!";
 
                 return View(user);
             }
@@ -109,7 +123,7 @@ namespace PCCO.Controllers
             await _userManager.SetTwoFactorEnabledAsync(user, false);
             await _userManager.ResetAuthenticatorKeyAsync(user);
             TempData["success"] = "Authenticator app key has been reset.";
-            return RedirectToPage("./EnableAuthenticator");
+            return RedirectToPage(nameof(Index));
         }
 
         public IActionResult MockEmail(string url)
@@ -124,15 +138,13 @@ namespace PCCO.Controllers
                 TempData["error"] = "Error occured while deleting!";
             else
                 TempData["success"] = "Deleted successfully!";
-            return RedirectToAction(nameof(Index), new { lastName = "" });
+            return RedirectToAction(nameof(Index));
         }
 
         public IActionResult LockUnlock(string userId)
         {
             string status = _service.LockUnlock(userId);
-            if (status == "notFound")
-                return NotFound();
-            else if (status == "locked")
+            if (status == "locked")
                 TempData["success"] = "User locked successfully!";
             else if (status == "unlocked")
                 TempData["success"] = "User unlocked successfully!";

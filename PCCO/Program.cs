@@ -10,9 +10,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<PCCOContext>(options => options.UseSqlServer(
-    builder.Configuration.GetConnectionString("DefaultConnection")));
-builder.Services.Configure<StripeSettings>(builder.Configuration.GetSection("Stripe"));
-builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true) //change on deploy
+    builder.Configuration["Database:Connection:Default"]));
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddDefaultTokenProviders()
     .AddEntityFrameworkStores<PCCOContext>()
     .AddDefaultUI();
@@ -21,10 +20,28 @@ builder.Services.Configure<IdentityOptions>(opts =>
     opts.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ ";
 });
 
-builder.Services.AddAuthentication().AddGoogle(googleOptions =>
+builder.Services.AddAuthentication()
+.AddGoogle(o =>
 {
-    googleOptions.ClientId = builder.Configuration["Authentication:Google:ClientId"];
-    googleOptions.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
+    o.ClientId = builder.Configuration["Authentication:Google:ClientId"];
+    o.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
+    o.Events.OnRemoteFailure = (context) =>
+    {
+        context.Response.Redirect("/User/Home/Index");
+        context.HandleResponse();
+        return Task.CompletedTask;
+    };
+})
+.AddFacebook(o =>
+{
+    o.AppId = builder.Configuration["Authentication:Facebook:AppId"];
+    o.AppSecret = builder.Configuration["Authentication:Facebook:AppSecret"];
+    o.Events.OnRemoteFailure = (context) =>
+    {
+        context.Response.Redirect("/User/Home/Index");
+        context.HandleResponse();
+        return Task.CompletedTask;
+    };
 });
 
 builder.Services.AddRazorPages().AddRazorRuntimeCompilation();
@@ -63,6 +80,7 @@ app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
+app.UseCookiePolicy();
 
 app.MapRazorPages();
 app.MapControllerRoute(

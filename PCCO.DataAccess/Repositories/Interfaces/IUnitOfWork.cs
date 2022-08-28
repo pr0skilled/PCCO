@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using PCCO.Models;
-
-namespace PCCO.DataAccess.Repositories.Interfaces
+﻿namespace PCCO.DataAccess.Repositories.Interfaces
 {
     public interface IUnitOfWork
     {

@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using PCCO.DataAccess;
 using PCCO.Models;
 
 namespace PCCO.Web.Areas.Identity.Pages.Account.Manage
@@ -14,25 +15,17 @@ namespace PCCO.Web.Areas.Identity.Pages.Account.Manage
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly PCCOContext _context;
 
         public IndexModel(
             UserManager<ApplicationUser> userManager,
+            PCCOContext context,
             SignInManager<ApplicationUser> signInManager)
         {
             _userManager = userManager;
+            _context = context;
             _signInManager = signInManager;
         }
-
-        [Display(Name = "Name")]
-        public string Username { get; set; }
-        public DateTime Birthday { get; set; }
-
-        [Display(Name = "Identification code")]
-        public string IdentificationCode { get; set; }
-        public string Workplace { get; set; }
-
-        [Display(Name = "Work position")]
-        public string WorkPosition { get; set; }
 
         public string StatusMessage { get; set; }
 
@@ -45,21 +38,29 @@ namespace PCCO.Web.Areas.Identity.Pages.Account.Manage
             [Display(Name = "Phone number")]
             [RegularExpression(@"^(?:\+38)?(0[5-9][0-9]\d{7})$", ErrorMessage = "Phone number should be in format '+380XXXXXXXXX'")]
             public string PhoneNumber { get; set; }
+
+            [Display(Name = "Name")]
+            public string Username { get; set; }
+            public DateTime Birthday { get; set; }
+
+            [Display(Name = "Identification code")]
+            public string IdentificationCode { get; set; }
+            public string Workplace { get; set; }
+
+            [Display(Name = "Work position")]
+            public string WorkPosition { get; set; }
         }
 
         private async Task LoadAsync(ApplicationUser user)
         {
-            var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
-
-            Username = user.UserName;
-            Birthday = user.Birthday;
-            IdentificationCode = user.IdentificationCode;
-            Workplace = user.Workplace;
-            WorkPosition = user.WorkPosition;
-
             Input = new InputModel
             {
-                PhoneNumber = phoneNumber
+                PhoneNumber = user.PhoneNumber,
+                Username = user.UserName,
+                Birthday = user.Birthday,
+                IdentificationCode = user.IdentificationCode,
+                Workplace = user.Workplace,
+                WorkPosition = user.WorkPosition
             };
         }
 
@@ -89,16 +90,13 @@ namespace PCCO.Web.Areas.Identity.Pages.Account.Manage
                 return Page();
             }
 
-            var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
-            if (Input.PhoneNumber != phoneNumber)
-            {
-                var setPhoneResult = await _userManager.SetPhoneNumberAsync(user, Input.PhoneNumber);
-                if (!setPhoneResult.Succeeded)
-                {
-                    StatusMessage = "Unexpected error when trying to set phone number.";
-                    return RedirectToPage();
-                }
-            }
+            user.UserName = Input.Username;
+            user.IdentificationCode = Input.IdentificationCode;
+            user.Workplace = Input.Workplace;
+            user.WorkPosition = Input.WorkPosition;
+            user.Birthday = Input.Birthday;
+            user.PhoneNumber = Input.PhoneNumber;
+            await _userManager.UpdateAsync(user);
 
             await _signInManager.RefreshSignInAsync(user);
             StatusMessage = "Your profile has been updated";

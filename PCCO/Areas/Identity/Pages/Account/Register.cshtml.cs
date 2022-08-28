@@ -1,17 +1,17 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
-// The .NET Foundation licenses this file to you under the MIT license.
-#nullable disable
-
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.Security.Claims;
 using System.Text;
 using System.Text.Encodings.Web;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.WebUtilities;
+using PCCO.DataAccess;
 using PCCO.Models;
 
 namespace PCCO.Web.Areas.Identity.Pages.Account
@@ -25,6 +25,7 @@ namespace PCCO.Web.Areas.Identity.Pages.Account
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
         private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly PCCOContext _context;
 
         public RegisterModel(
             UserManager<ApplicationUser> userManager,
@@ -32,10 +33,11 @@ namespace PCCO.Web.Areas.Identity.Pages.Account
             SignInManager<ApplicationUser> signInManager,
             ILogger<RegisterModel> logger,
             IEmailSender emailSender,
-            RoleManager<IdentityRole> roleManager)
+            RoleManager<IdentityRole> roleManager,
+            PCCOContext context)
         {
             _userManager = userManager;
-
+            _context = context;
             _userStore = userStore;
             _emailStore = GetEmailStore();
             _signInManager = signInManager;
@@ -50,6 +52,9 @@ namespace PCCO.Web.Areas.Identity.Pages.Account
         public string ReturnUrl { get; set; }
 
         public IList<AuthenticationScheme> ExternalLogins { get; set; }
+
+        [ValidateNever]
+        public IEnumerable<SelectListItem> RoleList { get; set; }
 
         public class InputModel
         {
@@ -107,6 +112,9 @@ namespace PCCO.Web.Areas.Identity.Pages.Account
             [Required(ErrorMessage = "You must enter a value for this field!")]
             [RegularExpression(@"^(?:\+38)?(0[5-9][0-9]\d{7})$", ErrorMessage = "Phone number should be in format '+380XXXXXXXXX'")]
             public string PhoneNumber { get; set; }
+
+            [DisplayName("User role")]
+            public string? Role { get; set; }
         }
 
 
@@ -114,6 +122,11 @@ namespace PCCO.Web.Areas.Identity.Pages.Account
         {
             ReturnUrl = returnUrl;
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+            RoleList = _roleManager.Roles.Select(x => x.Name).Select(i => new SelectListItem
+            {
+                Text = i,
+                Value = i
+            });
         }
 
         public async Task<IActionResult> OnPostAsync(string? returnUrl = null)
@@ -122,6 +135,21 @@ namespace PCCO.Web.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
+                if (_context.ApplicationUsers.Any(x => x.Email == Input.Email))
+                {
+                    ModelState.AddModelError(string.Empty, "User with such email already exists.");
+                    return Page();
+                }
+                if (_context.ApplicationUsers.Any(x => x.IdentificationCode == Input.IdentificationCode))
+                {
+                    ModelState.AddModelError(string.Empty, "User with such identification code already exists.");
+                    return Page();
+                }
+                if (_context.ApplicationUsers.Any(x => x.PhoneNumber == Input.PhoneNumber))
+                {
+                    ModelState.AddModelError(string.Empty, "User with such phone number already exists.");
+                    return Page();
+                }
                 var user = CreateUser();
 
                 string userName = string.Join(" ", Input.LastName, Input.FirstName, Input.MiddleName);
@@ -138,7 +166,16 @@ namespace PCCO.Web.Areas.Identity.Pages.Account
                 {
                     _logger.LogInformation("User created a new account with password.");
 
-                    await _userManager.AddToRoleAsync(user, "Registrator");
+                    if (Input.Role == null)
+                    {
+                        await _userManager.AddToRoleAsync(user, "Registrator");
+                    }
+                    else
+                    {
+                        await _userManager.AddToRoleAsync(user, Input.Role);
+                    }
+                    /*Claim claim = new("CreateAdministrators", "True");
+                    await _userManager.AddClaimsAsync(user, new List<Claim>() { claim });*/
                     var userId = await _userManager.GetUserIdAsync(user);
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));

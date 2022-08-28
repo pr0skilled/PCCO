@@ -2,7 +2,6 @@
 using PCCO.Models;
 using PCCO.Models.Messages.Request.UserPage;
 using PCCO.Models.ViewModels;
-using System.Text.Json;
 
 namespace PCCO.DataAccess.Repositories.Implementations
 {
@@ -171,7 +170,7 @@ namespace PCCO.DataAccess.Repositories.Implementations
                 CourtSentenceNumber = model.CourtSentenceNumber,
                 CriminalRecordCancellationDate = model.CriminalRecordCancellationDate,
                 CriminalRecordCancellationReason = model.CriminalActionCancellationReason,
-                IsActive = model.IsActive
+                IsActive = true
             };
             _context.Add(corruptionRecord);
 

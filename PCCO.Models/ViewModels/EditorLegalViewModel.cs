@@ -54,8 +54,7 @@ namespace PCCO.Models.ViewModels
         public string CourtCaseNumber { get; set; }
 
         [DisplayName("Court sentence date")]
-        [DataType(DataType.Date), Required(ErrorMessage = "You must enter a value for this field!")]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd-MM-yyyy}")]
+        [Required(ErrorMessage = "You must enter a value for this field!")]
         public DateTime? CourtSentenceDate { get; set; }
 
         [DisplayName("Court sentence number")]
@@ -63,16 +62,13 @@ namespace PCCO.Models.ViewModels
         public string CourtSentenceNumber { get; set; }
 
         [DisplayName("Court sentence applying date")]
-        [Required(ErrorMessage = "You must enter a value for this field!"), DataType(DataType.Date)]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd-MM-yyyy}")]
+        [Required(ErrorMessage = "You must enter a value for this field!")]
         public DateTime? CourtSentenceApplyingDate { get; set; }
 
-        [DisplayName("Criminal record cancellation reason")]
-        [DataType(DataType.Date)]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd-MM-yyyy}")]
+        [DisplayName("Criminal record cancellation date")]
         public DateTime? CriminalRecordCancellationDate { get; set; }
 
-        [DisplayName("Criminal record cancellation date")]
+        [DisplayName("Criminal record cancellation reason")]
         public string? CriminalRecordCancellationReason { get; set; }
 
         [DisplayName("Is corruption record active?")]
@@ -83,8 +79,6 @@ namespace PCCO.Models.ViewModels
         public string CriminalActionType { get; set; }
 
         [DisplayName("Criminal action cancellation date")]
-        [DataType(DataType.Date)]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd-MM-yyyy}")]
         public DateTime? CriminalActionCancellationDate { get; set; }
 
         [DisplayName("Criminal action cancellation reason")]
@@ -99,7 +93,6 @@ namespace PCCO.Models.ViewModels
         public string DisciplinaryActionDetails { get; set; }
 
         [DisplayName("Disciplinary action cancellation date")]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd-MM-yyyy}")]
         public DateTime? DisciplinaryActionCancellationDate { get; set; }
 
         [DisplayName("Disciplinary action cancellation reason")]

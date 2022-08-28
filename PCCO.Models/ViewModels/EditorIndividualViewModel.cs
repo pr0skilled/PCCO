@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using Microsoft.AspNetCore.Mvc;
 
 namespace PCCO.Models.ViewModels
 {
@@ -38,8 +37,7 @@ namespace PCCO.Models.ViewModels
         public string Workplace { get; set; }
 
         [DisplayName("Birthday")]
-        [DataType(DataType.Date), Required(ErrorMessage = "You must enter a value for this field!")]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
+        [Required(ErrorMessage = "You must enter a value for this field!")]
         public DateTime? Birthday { get; set; }
 
         [DisplayName("Birthplace")]
@@ -64,8 +62,7 @@ namespace PCCO.Models.ViewModels
         public string CourtCaseNumber { get; set; }
 
         [DisplayName("Court sentence date")]
-        [DataType(DataType.Date), Required(ErrorMessage = "You must enter a value for this field!")]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
+        [Required(ErrorMessage = "You must enter a value for this field!")]
         public DateTime? CourtSentenceDate { get; set; }
 
         [DisplayName("Court sentence number")]
@@ -73,13 +70,10 @@ namespace PCCO.Models.ViewModels
         public string CourtSentenceNumber { get; set; }
 
         [DisplayName("Court sentence applying date")]
-        [DataType(DataType.Date), Required(ErrorMessage = "You must enter a value for this field!")]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
+        [Required(ErrorMessage = "You must enter a value for this field!")]
         public DateTime? CourtSentenceApplyingDate { get; set; }
 
         [DisplayName("Criminal record cancellation date")]
-        [DataType(DataType.Date)]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
         public DateTime? CriminalRecordCancellationDate { get; set; }
 
         [DisplayName("Criminal record cancellation reason")]
@@ -94,8 +88,6 @@ namespace PCCO.Models.ViewModels
         public string CriminalActionType { get; set; }
 
         [DisplayName("Criminal action cancellation date")]
-        [DataType(DataType.Date)]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
         public DateTime? CriminalActionCancellationDate { get; set; }
 
         [DisplayName("Criminal action cancellation reason")]
@@ -110,7 +102,6 @@ namespace PCCO.Models.ViewModels
         public string DisciplinaryActionDetails { get; set; }
 
         [DisplayName("Disciplinary action cancellation date")]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
         public DateTime? DisciplinaryActionCancellationDate { get; set; }
 
         [DisplayName("Disciplinary action cancellation reason")]
@@ -142,7 +133,7 @@ namespace PCCO.Models.ViewModels
 
         [DisplayName("Code")]
         [Required(ErrorMessage = "You must enter a value for this field!")]
-        [Range(1000, 9999, ErrorMessage = "Identification code should contain only 4 digits")]
+        [Range(1000, 9999, ErrorMessage = "Identification code should not contain characters")]
         public int Code { get; set; }
 
         [DisplayName("Unit name")]
@@ -155,7 +146,8 @@ namespace PCCO.Models.ViewModels
 
         [DisplayName("Postal code")]
         [Required(ErrorMessage = "You must enter a value for this field!")]
-        [StringLength(5, MinimumLength = 5, ErrorMessage = "Postal code should have 6 digits")]
+        [StringLength(5, MinimumLength = 5, ErrorMessage = "Postal code should contain only 5 digits")]
+        [Range(1, 99999, ErrorMessage = "Postal code should not contain characters")]
         public string PostalCode { get; set; }
 
         [DisplayName("City")]
